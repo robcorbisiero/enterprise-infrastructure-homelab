@@ -1,7 +1,6 @@
 # Enterprise Infrastructure Homelab
 
-![IMG_1241](https://github.com/user-attachments/assets/a0bdc966-2583-4c55-9e4a-c4da5fd79c21)
-
+<img src="photos/homelab-setup-01.jpg" alt="Enterprise infrastructure homelab setup with Cisco switch, Windows Server host, and mini PCs" width="760">
 
 ## Overview
 
@@ -33,6 +32,14 @@ The purpose of the lab is to build and prove practical systems administration sk
 | Router uplink | Internet access during build phases | Home router dependent |
 
 The network started as a simple router-to-switch connection, then evolved into a routed lab network with Windows Server providing core infrastructure services and Proxmox hosts connected through the Cisco switch.
+
+## Physical Build
+
+| Homelab setup | DIY console cable |
+| --- | --- |
+| <img src="photos/homelab-setup-02.jpg" alt="Homelab setup with monitor, Cisco switch, server hardware, and mini PCs" width="360"> | <img src="photos/diy-console-cable-01.jpg" alt="Temporary DIY console cable connected to a StarTech USB to DB9 adapter" width="360"> |
+
+Additional photos are available in [photos](photos/).
 
 ## Major Build Phases
 
