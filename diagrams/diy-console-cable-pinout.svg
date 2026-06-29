@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">DIY Cisco Console Cable Pinout</title>
+  <desc id="desc">Pinout diagram showing a temporary three-wire Cisco console cable from a StarTech USB to male DB9 serial adapter to an RJ45 console plug.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f8fa; }
+      .panel { fill: #ffffff; stroke: #c9d1d9; stroke-width: 2; }
+      .title { font: 700 34px Arial, sans-serif; fill: #1f2328; }
+      .subtitle { font: 18px Arial, sans-serif; fill: #57606a; }
+      .label { font: 700 20px Arial, sans-serif; fill: #24292f; }
+      .small { font: 15px Arial, sans-serif; fill: #57606a; }
+      .pin-text { font: 700 16px Arial, sans-serif; fill: #1f2328; }
+      .wire-label { font: 700 18px Arial, sans-serif; fill: #1f2328; }
+      .note-title { font: 700 18px Arial, sans-serif; fill: #24292f; }
+      .note { font: 15px Arial, sans-serif; fill: #57606a; }
+      .pin { fill: #d0d7de; stroke: #8c959f; stroke-width: 2; }
+      .active-pin { fill: #fff8c5; stroke: #9a6700; stroke-width: 3; }
+      .connector { fill: #30363d; stroke: #1f2328; stroke-width: 3; }
+      .port { fill: #eaeef2; stroke: #8c959f; stroke-width: 2; }
+      .wire-green { stroke: #2da44e; stroke-width: 8; fill: none; stroke-linecap: round; }
+      .wire-yellow { stroke: #bf8700; stroke-width: 8; fill: none; stroke-linecap: round; }
+      .wire-blue { stroke: #0969da; stroke-width: 8; fill: none; stroke-linecap: round; }
+      .wire-blue2 { stroke: #54aeef; stroke-width: 8; fill: none; stroke-linecap: round; stroke-dasharray: 18 12; }
+      .box-text { font: 15px Arial, sans-serif; fill: #24292f; }
+      .table-head { font: 700 16px Arial, sans-serif; fill: #24292f; }
+      .table-cell { font: 15px Arial, sans-serif; fill: #24292f; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="760"/>
+  <text class="title" x="60" y="58">DIY Cisco Console Cable Pinout</text>
+  <text class="subtitle" x="60" y="88">Temporary 3-wire serial console adapter used to recover the Cisco Catalyst 3750G.</text>
+
+  <rect class="panel" x="60" y="125" width="500" height="360" rx="12"/>
+  <text class="label" x="90" y="165">StarTech USB-to-DB9 Adapter</text>
+  <text class="small" x="90" y="190">Male DB9 face, viewed from the pin side</text>
+
+  <path class="connector" d="M155 250 L465 250 L430 390 L190 390 Z"/>
+  <text class="small" x="213" y="425">Use Dupont jumpers wrapped around pins 2, 3, and 5</text>
+
+  <circle class="pin" cx="205" cy="290" r="18"/><text class="pin-text" x="200" y="296">1</text>
+  <circle class="active-pin" cx="265" cy="290" r="18"/><text class="pin-text" x="260" y="296">2</text>
+  <circle class="active-pin" cx="325" cy="290" r="18"/><text class="pin-text" x="320" y="296">3</text>
+  <circle class="pin" cx="385" cy="290" r="18"/><text class="pin-text" x="380" y="296">4</text>
+  <circle class="active-pin" cx="445" cy="290" r="18"/><text class="pin-text" x="440" y="296">5</text>
+
+  <circle class="pin" cx="235" cy="350" r="18"/><text class="pin-text" x="230" y="356">6</text>
+  <circle class="pin" cx="295" cy="350" r="18"/><text class="pin-text" x="290" y="356">7</text>
+  <circle class="pin" cx="355" cy="350" r="18"/><text class="pin-text" x="350" y="356">8</text>
+  <circle class="pin" cx="415" cy="350" r="18"/><text class="pin-text" x="410" y="356">9</text>
+
+  <text class="wire-label" x="217" y="238">DB9</text>
+  <text class="small" x="250" y="325">Pin 2 RX</text>
+  <text class="small" x="310" y="325">Pin 3 TX</text>
+  <text class="small" x="430" y="325">Pin 5 GND</text>
+
+  <rect class="panel" x="640" y="125" width="500" height="360" rx="12"/>
+  <text class="label" x="670" y="165">RJ45 Cisco Console Plug</text>
+  <text class="small" x="670" y="190">T568B color reference, clip facing away / contacts visible</text>
+
+  <rect class="port" x="730" y="245" width="320" height="110" rx="8"/>
+  <rect class="connector" x="760" y="355" width="260" height="45" rx="5"/>
+
+  <g>
+    <rect class="pin" x="750" y="265" width="34" height="72"/><text class="pin-text" x="762" y="306">1</text>
+    <rect class="pin" x="786" y="265" width="34" height="72"/><text class="pin-text" x="798" y="306">2</text>
+    <rect class="active-pin" x="822" y="265" width="34" height="72"/><text class="pin-text" x="834" y="306">3</text>
+    <rect class="active-pin" x="858" y="265" width="34" height="72"/><text class="pin-text" x="870" y="306">4</text>
+    <rect class="active-pin" x="894" y="265" width="34" height="72"/><text class="pin-text" x="906" y="306">5</text>
+    <rect class="active-pin" x="930" y="265" width="34" height="72"/><text class="pin-text" x="942" y="306">6</text>
+    <rect class="pin" x="966" y="265" width="34" height="72"/><text class="pin-text" x="978" y="306">7</text>
+    <rect class="pin" x="1002" y="265" width="34" height="72"/><text class="pin-text" x="1014" y="306">8</text>
+  </g>
+
+  <text class="wire-label" x="780" y="235">RJ45</text>
+  <text class="small" x="802" y="430">Pin 3 = white/green</text>
+  <text class="small" x="802" y="453">Pin 6 = green</text>
+  <text class="small" x="802" y="476">Pins 4 + 5 = blue pair ground</text>
+
+  <path class="wire-green" d="M265 290 C455 210, 640 210, 839 301"/>
+  <text class="wire-label" x="500" y="216">DB9 2 RX to RJ45 3</text>
+
+  <path class="wire-yellow" d="M325 290 C505 285, 665 255, 947 301"/>
+  <text class="wire-label" x="530" y="278">DB9 3 TX to RJ45 6</text>
+
+  <path class="wire-blue" d="M445 290 C560 380, 710 395, 875 301"/>
+  <path class="wire-blue2" d="M445 290 C570 420, 740 425, 911 301"/>
+  <text class="wire-label" x="520" y="407">DB9 5 GND to RJ45 4 + 5</text>
+
+  <rect class="panel" x="60" y="525" width="1080" height="165" rx="12"/>
+  <text class="note-title" x="90" y="560">Mapping Table</text>
+
+  <text class="table-head" x="90" y="598">DB9 Pin</text>
+  <text class="table-head" x="220" y="598">Signal</text>
+  <text class="table-head" x="360" y="598">RJ45 Pin</text>
+  <text class="table-head" x="500" y="598">T568B Wire</text>
+  <text class="table-head" x="720" y="598">Purpose</text>
+
+  <line x1="90" y1="610" x2="1110" y2="610" stroke="#d0d7de" stroke-width="2"/>
+
+  <text class="table-cell" x="90" y="640">2</text>
+  <text class="table-cell" x="220" y="640">RX</text>
+  <text class="table-cell" x="360" y="640">3</text>
+  <text class="table-cell" x="500" y="640">White/green</text>
+  <text class="table-cell" x="720" y="640">Receive data from switch</text>
+
+  <text class="table-cell" x="90" y="668">3</text>
+  <text class="table-cell" x="220" y="668">TX</text>
+  <text class="table-cell" x="360" y="668">6</text>
+  <text class="table-cell" x="500" y="668">Green</text>
+  <text class="table-cell" x="720" y="668">Transmit data to switch</text>
+
+  <text class="table-cell" x="90" y="696">5</text>
+  <text class="table-cell" x="220" y="696">GND</text>
+  <text class="table-cell" x="360" y="696">4 + 5</text>
+  <text class="table-cell" x="500" y="696">Blue + white/blue</text>
+  <text class="table-cell" x="720" y="696">Shared signal ground</text>
+
+  <text class="note" x="90" y="728">Note: This documents the temporary lab recovery cable. For regular use, replace it with a proper USB-to-RJ45 Cisco console cable.</text>
+</svg>

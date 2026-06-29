@@ -15,6 +15,10 @@ Gain console access to a Cisco Catalyst switch without an official Cisco console
 
 Photos of the temporary cable and physical setup are stored in [../photos](../photos/).
 
+Pinout diagram:
+
+![DIY Cisco console cable pinout](../diagrams/diy-console-cable-pinout.svg)
+
 ## Serial Settings
 
 | Setting | Value |
@@ -41,6 +45,14 @@ Photos of the temporary cable and physical setup are stored in [../photos](../ph
 - Only the required serial lines were used for the temporary connection.
 - Each temporary pin connection was isolated so adjacent DB9 pins would not touch.
 - This was a lab recovery method, not a permanent cabling standard.
+
+## Pinout Used
+
+| DB9 pin | Signal | RJ45 pin | T568B wire |
+| --- | --- | --- | --- |
+| 2 | RX | 3 | White/green |
+| 3 | TX | 6 | Green |
+| 5 | Ground | 4 and 5 | Blue and white/blue |
 
 ## Result
 

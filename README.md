@@ -47,6 +47,8 @@ Additional photos are available in [photos](photos/).
 
 Recovered a Cisco Catalyst 3750G from the `switch:` bootloader prompt using a temporary handmade serial console connection, PuTTY, flash inspection, BOOT variable cleanup, and manual IOS boot commands.
 
+![DIY Cisco console cable pinout](diagrams/diy-console-cable-pinout.svg)
+
 Documentation:
 
 - [Cisco switch recovery](networking/cisco-switch-recovery.md)
@@ -108,6 +110,7 @@ Documentation:
 - [networking](networking/) - Cisco switch recovery, console access, VLANs, and routing notes.
 - [windows-server](windows-server/) - Windows Server install, AD DS, DNS, DHCP, and WDS notes.
 - [proxmox](proxmox/) - Proxmox cluster, Ceph, VM inventory, Ubuntu Server, and Docker notes.
+- [diagrams](diagrams/) - Pinout and architecture diagrams.
 - [photos](photos/) - Homelab setup and DIY console cable photos.
 - [hardware-inventory.md](hardware-inventory.md) - Physical equipment used in the lab.
 - [troubleshooting-log.md](troubleshooting-log.md) - Issues encountered and how they were resolved.
