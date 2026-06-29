@@ -37,7 +37,7 @@ The network started as a simple router-to-switch connection, then evolved into a
 
 | Homelab setup | DIY console cable |
 | --- | --- |
-| <img src="photos/homelab-setup-02.jpg" alt="Homelab setup with monitor, Cisco switch, server hardware, and mini PCs" width="360"> | <img src="photos/diy-console-cable-01.jpg" alt="Temporary DIY console cable connected to a StarTech USB to DB9 adapter" width="360"> |
+| <img src="photos/homelab-setup-01.jpg" alt="Homelab setup with monitor, Cisco switch, server hardware, and mini PCs" width="360"> | <img src="photos/diy-console-cable-01.jpg" alt="Temporary DIY console cable connected to a StarTech USB to DB9 adapter" width="360"> |
 
 Additional photos are available in [photos](photos/).
 

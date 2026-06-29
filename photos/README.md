@@ -13,10 +13,10 @@ This folder contains physical documentation of the homelab build, including the 
 | Web Preview | Original | Description |
 | --- | --- | --- |
 | [homelab-setup-01.jpg](homelab-setup-01.jpg) | [homelab-setup-01.heic](homelab-setup-01.heic) | Physical homelab setup photo. |
-| [homelab-setup-02.jpg](homelab-setup-02.jpg) | [homelab-setup-02.heic](homelab-setup-02.heic) | Physical homelab setup photo. |
 | [diy-console-cable-01.jpg](diy-console-cable-01.jpg) | [diy-console-cable-01.heic](diy-console-cable-01.heic) | Temporary console cable / serial recovery setup. |
 | [diy-console-cable-02.jpg](diy-console-cable-02.jpg) | [diy-console-cable-02.heic](diy-console-cable-02.heic) | Temporary console cable / serial recovery setup. |
 | [diy-console-cable-03.jpg](diy-console-cable-03.jpg) | [diy-console-cable-03.heic](diy-console-cable-03.heic) | Temporary console cable / serial recovery setup. |
+| [diy-console-cable-04.jpg](diy-console-cable-04.jpg) | [diy-console-cable-04.heic](diy-console-cable-04.heic) | Temporary console cable / serial recovery setup. |
 
 ## Notes
 
