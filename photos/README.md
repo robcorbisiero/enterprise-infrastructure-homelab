@@ -8,19 +8,18 @@ This folder contains physical documentation of the homelab build, including the 
 | --- | --- |
 | <img src="homelab-setup-01.jpg" alt="Enterprise infrastructure homelab setup" width="360"> | <img src="diy-console-cable-01.jpg" alt="Temporary DIY console cable connected to USB to DB9 adapter" width="360"> |
 
-## Photo Index
+## Gallery
 
-| Web Preview | Original | Description |
-| --- | --- | --- |
-| [homelab-setup-01.jpg](homelab-setup-01.jpg) | [homelab-setup-01.heic](homelab-setup-01.heic) | Physical homelab setup photo. |
-| [diy-console-cable-01.jpg](diy-console-cable-01.jpg) | [diy-console-cable-01.heic](diy-console-cable-01.heic) | Temporary console cable / serial recovery setup. |
-| [diy-console-cable-02.jpg](diy-console-cable-02.jpg) | [diy-console-cable-02.heic](diy-console-cable-02.heic) | Temporary console cable / serial recovery setup. |
-| [diy-console-cable-03.jpg](diy-console-cable-03.jpg) | [diy-console-cable-03.heic](diy-console-cable-03.heic) | Temporary console cable / serial recovery setup. |
-| [diy-console-cable-04.jpg](diy-console-cable-04.jpg) | [diy-console-cable-04.heic](diy-console-cable-04.heic) | Temporary console cable / serial recovery setup. |
+| Photo | Description |
+| --- | --- |
+| <img src="homelab-setup-01.jpg" alt="Physical homelab setup" width="360"> | Physical homelab setup with Cisco switch, Windows Server host, and mini PCs. |
+| <img src="diy-console-cable-01.jpg" alt="Temporary console cable connected to USB to DB9 adapter" width="360"> | Temporary console cable connected to the StarTech USB-to-DB9 adapter. |
+| <img src="diy-console-cable-02.jpg" alt="Spliced cable section wrapped with tape" width="360"> | Spliced cable section wrapped and insulated. |
+| <img src="diy-console-cable-03.jpg" alt="RJ45 and USB sides of temporary console cable" width="360"> | RJ45 and USB sides of the temporary console cable. |
+| <img src="diy-console-cable-04.jpg" alt="Full temporary DIY console cable" width="360"> | Full temporary DIY console cable assembly. |
 
 ## Notes
 
-- JPEG copies are included so images render directly in GitHub Markdown.
-- Original photos were captured as HEIC files and are kept for archival quality.
+- Photos are stored as JPEG files so they render directly in GitHub Markdown.
 - These images document the physical side of the build, not just the logical configuration.
 - The DIY console connection was used as a temporary recovery method before the switch was reusable through normal management paths.
