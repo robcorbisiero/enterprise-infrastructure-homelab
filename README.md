@@ -1,5 +1,5 @@
 # Enterprise Infrastructure Homelab
-![IMG_1241](https://github.com/user-attachments/assets/47dd30b4-92b9-4943-9970-5238b1ab5c68)
+![IMG_1241](https://github.com/user-attachments/assets/421fed21-c683-4b14-b7b9-cf54b0f48f61)
 
 ## Overview
 
