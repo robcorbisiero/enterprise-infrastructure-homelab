@@ -1,5 +1,7 @@
 # Enterprise Infrastructure Homelab
 
+![IMG_1241](https://github.com/user-attachments/assets/ddef74d4-51b8-45af-ac6e-93c2a417b9ca)
+
 ## Overview
 
 This repository documents an enterprise-style infrastructure homelab built from refurbished desktop hardware, a Cisco Catalyst switch, Windows Server, Proxmox VE, Ubuntu Server, Active Directory, DHCP, DNS, WDS, SSH, Docker, and clustered storage.
