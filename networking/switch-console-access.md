@@ -13,6 +13,8 @@ Gain console access to a Cisco Catalyst switch without an official Cisco console
 - PuTTY
 - Cisco Catalyst 3750G switch
 
+Photos of the temporary cable and physical setup are stored in [../photos](../photos/).
+
 ## Serial Settings
 
 | Setting | Value |

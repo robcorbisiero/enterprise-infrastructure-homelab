@@ -32,3 +32,4 @@
 - The Windows Server host uses Wi-Fi for upstream internet and Ethernet for the lab switch connection.
 - Three mini PCs are currently connected, clustered in Proxmox, and using Ceph.
 - Additional mini PCs can be imaged through WDS once ISO/install images are added.
+- Physical photos of the setup and temporary console cable are stored in [photos](photos/).

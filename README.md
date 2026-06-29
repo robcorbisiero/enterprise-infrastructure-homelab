@@ -21,6 +21,7 @@ The purpose of the lab is to build and prove practical systems administration sk
 - Ubuntu Server VM deployed inside Proxmox.
 - SSH key-based authentication configured for the Ubuntu VM.
 - Docker installation started on Ubuntu Server, with repository/GPG troubleshooting documented.
+- Physical setup and DIY console cable photos are archived in [photos](photos/).
 
 ## Network Design
 
@@ -100,6 +101,7 @@ Documentation:
 - [networking](networking/) - Cisco switch recovery, console access, VLANs, and routing notes.
 - [windows-server](windows-server/) - Windows Server install, AD DS, DNS, DHCP, and WDS notes.
 - [proxmox](proxmox/) - Proxmox cluster, Ceph, VM inventory, Ubuntu Server, and Docker notes.
+- [photos](photos/) - Homelab setup and DIY console cable photos.
 - [hardware-inventory.md](hardware-inventory.md) - Physical equipment used in the lab.
 - [troubleshooting-log.md](troubleshooting-log.md) - Issues encountered and how they were resolved.
 - [lessons-learned.md](lessons-learned.md) - Practical takeaways from the build.
