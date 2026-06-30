@@ -13,7 +13,7 @@
 | Device | Role | Notes |
 | --- | --- | --- |
 | Custom desktop build | Windows Server host | Intel i5-4670K, 16 GB DDR3 RAM, 256 GB SSD. Used for Windows Server infrastructure roles. |
-| Mini PCs | Proxmox cluster nodes | Three nodes currently clustered with Ceph. Additional mini PCs are available for imaging and expansion. |
+| Mini PCs | Proxmox cluster nodes | Three nodes currently clustered in Proxmox. Additional mini PCs are available for imaging and expansion. |
 | Dell OptiPlex systems | Refurbished lab clients/hosts | Used for hardware practice and potential client imaging. |
 | Lenovo ThinkCentre systems | Refurbished lab clients/hosts | Used for hardware practice and potential client imaging. |
 
@@ -30,6 +30,7 @@
 ## Current Lab Notes
 
 - The Windows Server host uses Wi-Fi for upstream internet and Ethernet for the lab switch connection.
-- Three mini PCs are currently connected, clustered in Proxmox, and using Ceph.
+- Three mini PCs are currently connected and clustered in Proxmox.
+- Three SSDs are pooled on the Windows Server storage host and exported to Proxmox through Windows NFS.
 - Additional mini PCs can be imaged through WDS once ISO/install images are added.
 - Physical photos of the setup and temporary console cable are stored in [photos](photos/).

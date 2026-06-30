@@ -4,7 +4,7 @@
 
 ## Overview
 
-This repository documents an enterprise-style infrastructure homelab built from refurbished desktop hardware, a Cisco Catalyst switch, Windows Server, Proxmox VE, Ubuntu Server, Active Directory, DHCP, DNS, WDS, SSH, Docker, and clustered storage.
+This repository documents an enterprise-style infrastructure homelab built from refurbished desktop hardware, a Cisco Catalyst switch, Windows Server, Proxmox VE, Ubuntu Server, Active Directory, DHCP, DNS, WDS, SSH, Docker, Portainer, and shared storage.
 
 The purpose of the lab is to build and prove practical systems administration skills: recovering hardware, configuring switching, deploying directory services, building virtualization infrastructure, troubleshooting routing, and documenting the work in a professional format.
 
@@ -16,7 +16,7 @@ The purpose of the lab is to build and prove practical systems administration sk
 - DNS and DHCP configured on Windows Server.
 - Windows Deployment Services prepared for imaging mini PCs.
 - Three Proxmox VE mini PCs clustered together.
-- Ceph configured for shared lab storage.
+- Windows NFS shared storage added to Proxmox from pooled SSD storage.
 - Ubuntu Server VM deployed inside Proxmox.
 - SSH key-based authentication configured for the Ubuntu VM.
 - Docker installed on Ubuntu Server with Portainer running for container management.
@@ -33,6 +33,10 @@ The purpose of the lab is to build and prove practical systems administration sk
 | Router uplink | Internet access during build phases | Home router dependent |
 
 The network started as a simple router-to-switch connection, then evolved into a routed lab network with Windows Server providing core infrastructure services and Proxmox hosts connected through the Cisco switch.
+
+## Topology
+
+![Enterprise homelab topology](diagrams/homelab-topology.svg)
 
 ## Physical Build
 
@@ -72,16 +76,16 @@ Documentation:
 - [Active Directory](windows-server/active-directory.md)
 - [Windows Deployment Services](windows-server/windows-deployment-services.md)
 
-### 4. Proxmox Cluster and Ceph
+### 4. Proxmox Cluster and Shared Storage
 
-Installed Proxmox VE on mini PCs, created a three-node cluster, configured the no-subscription repository path, and enabled Ceph-backed shared storage for realistic virtualization operations.
+Installed Proxmox VE on mini PCs, created a three-node cluster, configured the no-subscription repository path, and attached Windows NFS shared storage backed by pooled SSDs.
 
 ![Proxmox cluster summary](screenshots/proxmox/cluster-summary.png)
 
 Documentation:
 
 - [Proxmox VM inventory](proxmox/vm-inventory.md)
-- [Proxmox Ceph cluster](proxmox/ceph-cluster.md)
+- [Windows NFS shared storage](proxmox/windows-nfs-storage.md)
 
 ### 5. Ubuntu Server and Secure Administration
 
@@ -106,7 +110,8 @@ Documentation:
 - DNS and DHCP administration
 - WDS imaging preparation
 - Proxmox VE installation and clustering
-- Ceph shared storage fundamentals
+- Proxmox shared storage integration
+- Windows NFS storage pooling and export concepts
 - Ubuntu Server administration
 - SSH key generation, public key deployment, and daemon hardening
 - Docker, Docker Compose, and Portainer deployment
@@ -117,7 +122,7 @@ Documentation:
 
 - [networking](networking/) - Cisco switch recovery, console access, VLANs, and routing notes.
 - [windows-server](windows-server/) - Windows Server install, AD DS, DNS, DHCP, and WDS notes.
-- [proxmox](proxmox/) - Proxmox cluster, Ceph, VM inventory, Ubuntu Server, and Docker notes.
+- [proxmox](proxmox/) - Proxmox cluster, Windows NFS shared storage, VM inventory, Ubuntu Server, and Docker notes.
 - [diagrams](diagrams/) - Pinout and architecture diagrams.
 - [photos](photos/) - Homelab setup and DIY console cable photos.
 - [screenshots](screenshots/) - Validation screenshots for networking, Windows Server, Proxmox, Linux, and Docker.

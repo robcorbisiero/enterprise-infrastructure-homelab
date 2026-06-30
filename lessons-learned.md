@@ -24,7 +24,7 @@
 ## Proxmox and Virtualization
 
 - A three-node Proxmox cluster is a realistic way to learn enterprise virtualization concepts on small hardware.
-- Ceph is useful for learning shared storage, replication, and cluster thinking, even in a small homelab.
+- Shared storage design should match the hardware. Windows NFS was a better current fit than Ceph because the SSDs are pooled on the Windows Server storage host.
 - Static addressing and consistent host naming are important before adding nodes to a cluster.
 
 ## Linux Administration
