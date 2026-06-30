@@ -4,6 +4,10 @@
 
 Deploy an Ubuntu Server VM inside Proxmox and configure it as a secure Linux administration and container host.
 
+Evidence:
+
+![Ubuntu VM summary in Proxmox](../screenshots/proxmox/ubuntu-vm-summary.png)
+
 ## Network Context
 
 The Ubuntu VM was connected into the lab network and required routing/DNS correction before it could access external resources reliably.
@@ -35,8 +39,10 @@ chmod 600 ~/.ssh/authorized_keys
 Passwordless SSH login was then verified from Windows Server:
 
 ```powershell
-ssh rob@10.10.10.103
+ssh administrator@10.10.10.103
 ```
+
+![SSH login and hostnamectl output](../screenshots/linux/ubuntu-ssh-hostnamectl.png)
 
 ## SSH Hardening
 
@@ -67,6 +73,8 @@ sudo systemctl status ssh
 - Opened a second SSH session before closing the first session.
 - Confirmed the SSH service was active.
 - Confirmed standard password login was disabled after key-based access was working.
+
+![SSH service status](../screenshots/linux/ubuntu-ssh-service-status.png)
 
 ## Result
 

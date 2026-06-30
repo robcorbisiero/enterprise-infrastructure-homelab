@@ -4,6 +4,10 @@
 
 Install Docker Engine and Docker Compose on the Ubuntu Server VM so the homelab can host containerized services.
 
+Final validation:
+
+![Portainer container running](../screenshots/docker/portainer-container-running.png)
+
 ## Intended Install Path
 
 The target was the official Docker repository rather than the older packages bundled in Ubuntu's default repositories.
@@ -50,7 +54,7 @@ This meant APT could see the Docker repository, but could not verify it because 
 - Identified that the key file was not present when `chmod` was attempted.
 - Switched the plan toward using a readable `.asc` key path.
 
-## Next Validation Steps
+## Installation Validation Steps
 
 ```bash
 sudo mkdir -p /etc/apt/keyrings
@@ -70,4 +74,17 @@ docker run hello-world
 
 ## Current Status
 
-Docker installation was in progress at the time of documentation. The important learning outcome was repository trust troubleshooting, which is a common Linux administration task.
+Docker installation was completed successfully. Portainer Community Edition was deployed as a running container and is reachable at:
+
+```text
+https://10.10.10.103:9443/
+```
+
+Published ports shown in Portainer:
+
+```text
+8000:8000
+9443:9443
+```
+
+The important learning outcomes were Docker repository trust troubleshooting, container runtime installation, and web-based container management through Portainer.

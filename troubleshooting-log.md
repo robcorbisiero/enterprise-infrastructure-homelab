@@ -128,4 +128,4 @@
 - Attempted to place Docker's GPG key under `/etc/apt/keyrings/`.
 - Switched the plan toward using a readable `.asc` key path.
 
-**Current Status:** Docker installation was in progress. The next validation step is a clean `sudo apt update`, followed by installing `docker-ce`, `docker-ce-cli`, `containerd.io`, and `docker-compose-plugin`.
+**Resolution:** Docker installation was completed after correcting the repository/key workflow. Portainer was deployed successfully and is running on the Ubuntu server at `10.10.10.103` using HTTPS port `9443`.

@@ -20,10 +20,16 @@ The lab includes multiple mini PCs. WDS turns repeated manual installs into a re
 
 ## Current Status
 
-- WDS role planning was completed.
+- WDS role was installed and configured.
+- Server `LAB-DC-01.lab.corbitpros.com` appears in WDS as configured.
+- Server mode is native Windows Deployment Services.
 - The need for ISO/install media was identified.
 - Image group naming was planned.
 - Full deployment testing is pending available ISO media and PXE/client validation.
+
+Evidence:
+
+![Windows Deployment Services configured](../screenshots/windows-server/wds-configured.png)
 
 ## Skills Demonstrated
 

@@ -19,8 +19,9 @@ The purpose of the lab is to build and prove practical systems administration sk
 - Ceph configured for shared lab storage.
 - Ubuntu Server VM deployed inside Proxmox.
 - SSH key-based authentication configured for the Ubuntu VM.
-- Docker installation started on Ubuntu Server, with repository/GPG troubleshooting documented.
+- Docker installed on Ubuntu Server with Portainer running for container management.
 - Physical setup and DIY console cable photos are archived in [photos](photos/).
+- Validation screenshots are archived in [screenshots](screenshots/).
 
 ## Network Design
 
@@ -63,6 +64,8 @@ Configured switch management access, restored SSH after a port/VLAN change cause
 
 Installed Windows Server 2016 after newer server driver compatibility issues with an older Wi-Fi card. Configured the server for infrastructure roles including Active Directory Domain Services, DNS, DHCP, and WDS preparation.
 
+![Windows Server Manager dashboard](screenshots/windows-server/server-manager-dashboard.png)
+
 Documentation:
 
 - [Windows Server 2016 install](windows-server/windows-server-2016-install.md)
@@ -73,6 +76,8 @@ Documentation:
 
 Installed Proxmox VE on mini PCs, created a three-node cluster, configured the no-subscription repository path, and enabled Ceph-backed shared storage for realistic virtualization operations.
 
+![Proxmox cluster summary](screenshots/proxmox/cluster-summary.png)
+
 Documentation:
 
 - [Proxmox VM inventory](proxmox/vm-inventory.md)
@@ -81,6 +86,8 @@ Documentation:
 ### 5. Ubuntu Server and Secure Administration
 
 Created an Ubuntu Server VM, fixed routing/DNS issues through the Windows Server gateway path, generated SSH keys, configured passwordless login, and hardened SSH by disabling password authentication.
+
+![Portainer running on Docker](screenshots/docker/portainer-container-running.png)
 
 Documentation:
 
@@ -102,6 +109,7 @@ Documentation:
 - Ceph shared storage fundamentals
 - Ubuntu Server administration
 - SSH key generation, public key deployment, and daemon hardening
+- Docker, Docker Compose, and Portainer deployment
 - Docker repository and GPG-key troubleshooting
 - Technical documentation and root cause analysis
 
@@ -112,6 +120,7 @@ Documentation:
 - [proxmox](proxmox/) - Proxmox cluster, Ceph, VM inventory, Ubuntu Server, and Docker notes.
 - [diagrams](diagrams/) - Pinout and architecture diagrams.
 - [photos](photos/) - Homelab setup and DIY console cable photos.
+- [screenshots](screenshots/) - Validation screenshots for networking, Windows Server, Proxmox, Linux, and Docker.
 - [hardware-inventory.md](hardware-inventory.md) - Physical equipment used in the lab.
 - [troubleshooting-log.md](troubleshooting-log.md) - Issues encountered and how they were resolved.
 - [lessons-learned.md](lessons-learned.md) - Practical takeaways from the build.

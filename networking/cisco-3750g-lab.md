@@ -17,6 +17,12 @@ Key tasks:
 - Prepared the switch for SSH-based management.
 - Validated that console access remained available during management changes.
 
+Evidence:
+
+![Cisco show version](../screenshots/networking/cisco-show-version.png)
+
+![Cisco VTY SSH configuration](../screenshots/networking/cisco-vty-ssh-config.png)
+
 ### Scenario 2: VLAN and Port Assignment
 
 Started segmenting the lab network into dedicated VLANs.
@@ -27,12 +33,18 @@ Example VLAN plan:
 | --- | --- | --- |
 | VLAN 10 | Lab servers and management | `10.10.10.0/24` |
 | VLAN 20 | Secondary/IoT test network | `10.20.20.0/24` |
+| VLAN 30 | Guest network | Planned guest segment |
+| VLAN 184 | WAN/uplink segment | Lab uplink segment |
 
 Operational note:
 
 - Port 1 was initially connected to the home router for internet/uplink access.
 - Changing port 1 configuration caused SSH management to drop.
 - Access was restored by correcting the management path.
+
+Evidence:
+
+![Cisco VLAN brief](../screenshots/networking/cisco-vlan-brief.png)
 
 ### Scenario 3: Layer 3 Switching Preparation
 
@@ -44,6 +56,10 @@ Key tasks:
 - Reviewed the need for `ip routing` when routing between VLANs locally.
 - Tested connectivity between the switch and Windows Server.
 - Validated server reachability after correcting addressing and port configuration.
+
+Evidence:
+
+![Cisco IP interface brief](../screenshots/networking/cisco-ip-interface-brief.png)
 
 ## Validation Commands
 

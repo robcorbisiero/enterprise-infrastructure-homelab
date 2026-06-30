@@ -9,6 +9,7 @@ Configure Windows Server 2016 as the central identity, DNS, and DHCP server for 
 | Item | Value |
 | --- | --- |
 | Domain | `corbitpros.com` |
+| AD DNS name shown in consoles | `lab.corbitpros.com` |
 | Server role | Domain controller / infrastructure server |
 | Lab network | `10.10.10.0/24` |
 
@@ -23,6 +24,10 @@ Portfolio talking points:
 - Established a named lab domain.
 - Prepared the environment for domain-joined clients and servers.
 
+Evidence:
+
+![Active Directory domain controllers](../screenshots/windows-server/active-directory-domain-controllers.png)
+
 ## DNS
 
 DNS was configured as part of the domain controller build so lab clients and servers can resolve domain resources.
@@ -33,6 +38,10 @@ Key purpose:
 - Support AD DS service discovery.
 - Provide consistent name resolution for lab infrastructure.
 
+Evidence:
+
+![DNS forward lookup zones](../screenshots/windows-server/dns-forward-lookup-zones.png)
+
 ## DHCP
 
 DHCP was configured to provide addressing for lab-connected systems.
@@ -42,6 +51,10 @@ Troubleshooting note:
 - DHCP did not initially appear as expected.
 - The server was checked in the authorized DHCP servers list.
 - It was already authorized, and the DHCP console began showing it correctly afterward.
+
+Evidence:
+
+![DHCP active scope](../screenshots/windows-server/dhcp-active-scope.png)
 
 ## Validation
 
@@ -55,3 +68,5 @@ Validation steps used during the lab:
 ## Result
 
 The Windows Server host now acts as the foundation for centralized infrastructure services in the homelab.
+
+![Server Manager dashboard](../screenshots/windows-server/server-manager-dashboard.png)

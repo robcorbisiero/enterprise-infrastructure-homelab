@@ -7,8 +7,15 @@ Build a small Proxmox VE cluster using mini PCs and configure Ceph to learn shar
 ## Current State
 
 - Three mini PCs are plugged in and clustered.
+- Cluster name: `Corbit-Cloud`.
+- Proxmox version shown in the UI: `9.2.3`.
+- Nodes are online at `10.10.10.11`, `10.10.10.12`, and `10.10.10.13`.
 - Ceph has been configured.
 - Additional mini PCs are available for future expansion.
+
+Evidence:
+
+![Proxmox cluster summary](../screenshots/proxmox/cluster-summary.png)
 
 ## Why Ceph
 
