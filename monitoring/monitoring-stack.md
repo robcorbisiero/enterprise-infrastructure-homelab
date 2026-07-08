@@ -38,13 +38,43 @@ On each Proxmox node (`pve-01`, `pve-02`, `pve-03`):
 
 ```bash
 useradd --no-create-home --shell /usr/sbin/nologin node_exporter
-wget https://github.com/prometheus/node_exporter/releases/latest/download/node_exporter-*.linux-amd64.tar.gz
-tar xvf node_exporter-*.linux-amd64.tar.gz
-cp node_exporter-*/node_exporter /usr/local/bin/
+
+NODE_EXPORTER_VERSION=$(curl -s https://api.github.com/repos/prometheus/node_exporter/releases/latest \
+  | grep '"tag_name"' | cut -d'"' -f4 | sed 's/^v//')
+
+wget "https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz"
+tar xvf "node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz"
+cp "node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64/node_exporter" /usr/local/bin/
 chown node_exporter:node_exporter /usr/local/bin/node_exporter
 ```
 
-Then create a systemd unit (`/etc/systemd/system/node_exporter.service`) running as the `node_exporter` user, `enable --now` it, and confirm `curl localhost:9100/metrics` returns data before moving to the next node.
+Create `/etc/systemd/system/node_exporter.service`:
+
+```ini
+[Unit]
+Description=Prometheus Node Exporter
+After=network.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Enable and start it, then confirm `curl localhost:9100/metrics` returns data before moving to the next node:
+
+```bash
+systemctl daemon-reload
+systemctl enable --now node_exporter
+systemctl status node_exporter
+curl localhost:9100/metrics | head
+```
+
+If the Proxmox firewall (`pve-firewall`) is enabled on any node, add a rule allowing TCP/9100 from the Docker host (`10.10.10.103`) — otherwise Prometheus scrapes will time out even though the service is running locally.
 
 ## Access Points (once deployed)
 
@@ -59,6 +89,10 @@ Grafana:      http://10.10.10.103:3000
 - Prometheus **Status > Targets** shows all targets (`docker-host`, `docker-containers`, and all three `proxmox-nodes`) as `UP`.
 - Grafana loads with the Prometheus datasource already configured (no manual setup).
 - Triggering a test condition (e.g. stopping a Proxmox node's `node_exporter` service) produces a firing alert in Prometheus **Alerts** and a corresponding notification in Alertmanager.
+
+![Prometheus targets all up](../screenshots/monitoring/prometheus-targets-all-up.png)
+
+All five scrape targets (`docker-host`, `docker-containers`, `prometheus`, and 3/3 `proxmox-nodes`) reporting `UP`, confirming node_exporter is reachable on the Docker host and all three Proxmox cluster nodes.
 
 ## Planned Enhancements
 

@@ -102,6 +102,8 @@ Documentation:
 
 Deployed a Prometheus, Grafana, node-exporter, cAdvisor, and Alertmanager stack on the Docker host, with `node_exporter` installed natively on each Proxmox VE node so cluster hosts are monitored alongside the Docker VM and its containers.
 
+![Prometheus targets all up](screenshots/monitoring/prometheus-targets-all-up.png)
+
 Documentation:
 
 - [Monitoring and alerting stack](monitoring/monitoring-stack.md)
