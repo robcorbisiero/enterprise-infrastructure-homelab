@@ -98,6 +98,14 @@ Documentation:
 - [Ubuntu Server VM](proxmox/ubuntu-server-vm.md)
 - [Docker host setup](proxmox/docker-host.md)
 
+### 6. Monitoring and Alerting
+
+Deployed a Prometheus, Grafana, node-exporter, cAdvisor, and Alertmanager stack on the Docker host, with `node_exporter` installed natively on each Proxmox VE node so cluster hosts are monitored alongside the Docker VM and its containers.
+
+Documentation:
+
+- [Monitoring and alerting stack](monitoring/monitoring-stack.md)
+
 ## Skills Demonstrated
 
 - Cisco console recovery and bootloader troubleshooting
@@ -116,6 +124,8 @@ Documentation:
 - SSH key generation, public key deployment, and daemon hardening
 - Docker, Docker Compose, and Portainer deployment
 - Docker repository and GPG-key troubleshooting
+- Prometheus, Grafana, and Alertmanager deployment
+- Metrics collection across virtualization hosts and containers
 - Technical documentation and root cause analysis
 
 ## Repository Structure
@@ -123,6 +133,7 @@ Documentation:
 - [networking](networking/) - Cisco switch recovery, console access, VLANs, and routing notes.
 - [windows-server](windows-server/) - Windows Server install, AD DS, DNS, DHCP, and WDS notes.
 - [proxmox](proxmox/) - Proxmox cluster, Windows NFS shared storage, VM inventory, Ubuntu Server, and Docker notes.
+- [monitoring](monitoring/) - Prometheus, Grafana, Alertmanager, and exporter configs and setup notes.
 - [diagrams](diagrams/) - Pinout and architecture diagrams.
 - [photos](photos/) - Homelab setup and DIY console cable photos.
 - [screenshots](screenshots/) - Validation screenshots for networking, Windows Server, Proxmox, Linux, and Docker.

@@ -1,0 +1,40 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - "alertmanager:9093"
+
+rule_files:
+  - "alert.rules.yml"
+
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: "docker-host"
+    static_configs:
+      - targets: ["node-exporter:9100"]
+        labels:
+          role: "docker-host"
+
+  - job_name: "docker-containers"
+    static_configs:
+      - targets: ["cadvisor:8080"]
+        labels:
+          role: "docker-host"
+
+  # node_exporter installed natively on each Proxmox VE node
+  # (Proxmox does not run Docker on the host, so the exporter runs as a system service)
+  - job_name: "proxmox-nodes"
+    static_configs:
+      - targets:
+          - "10.10.10.11:9100"
+          - "10.10.10.12:9100"
+          - "10.10.10.13:9100"
+        labels:
+          role: "proxmox-node"
