@@ -108,6 +108,14 @@ Documentation:
 
 - [Monitoring and alerting stack](monitoring/monitoring-stack.md)
 
+### 7. Organizational Units and Group Policy
+
+Finished the WDS imaging loop by PXE-booting a Windows 10 client onto a spare mini PC and joining it to the domain, then introduced `Workstations` and `Servers` OUs so Group Policy can be scoped instead of relying on the default `Computers` container.
+
+Documentation:
+
+- [Organizational units and Group Policy](windows-server/group-policy.md)
+
 ## Skills Demonstrated
 
 - Cisco console recovery and bootloader troubleshooting
@@ -133,7 +141,7 @@ Documentation:
 ## Repository Structure
 
 - [networking](networking/) - Cisco switch recovery, console access, VLANs, and routing notes.
-- [windows-server](windows-server/) - Windows Server install, AD DS, DNS, DHCP, and WDS notes.
+- [windows-server](windows-server/) - Windows Server install, AD DS, DNS, DHCP, WDS, OU, and Group Policy notes.
 - [proxmox](proxmox/) - Proxmox cluster, Windows NFS shared storage, VM inventory, Ubuntu Server, and Docker notes.
 - [monitoring](monitoring/) - Prometheus, Grafana, Alertmanager, and exporter configs and setup notes.
 - [diagrams](diagrams/) - Pinout and architecture diagrams.
