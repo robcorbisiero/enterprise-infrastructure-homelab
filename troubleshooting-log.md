@@ -129,3 +129,16 @@
 - Switched the plan toward using a readable `.asc` key path.
 
 **Resolution:** Docker installation was completed after correcting the repository/key workflow. Portainer was deployed successfully and is running on the Ubuntu server at `10.10.10.103` using HTTPS port `9443`.
+
+## Stale DNS Record After Renaming a Domain-Joined Client
+
+**Symptom:** After renaming the WDS-imaged Windows 10 client to `PC01`, the computer object couldn't be cleanly located/moved into the new `Workstations` OU under its new name.
+
+**Cause:** Renaming a domain-joined machine doesn't immediately update its DNS `A` record — the old name/record lingered until the client re-registered itself.
+
+**Actions Taken:**
+
+- Ran `ipconfig /flushdns` on the client to clear the stale local resolver cache.
+- Ran `ipconfig /registerdns` on the client to force re-registration of its DNS record under the new name.
+
+**Resolution:** DNS reflected the new `PC01` name, after which the computer object was correctly identifiable for the `Move-ADObject` step into the `Workstations` OU.
