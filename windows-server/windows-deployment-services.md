@@ -40,9 +40,38 @@ CLIENT IP: 10.10.10.100   DHCP IP: 10.10.10.2   GATEWAY IP: 10.10.10.1
 Downloaded WDSNBP from 10.10.10.2 LAB-DC-01.lab.corbitpros.com
 ```
 
-![PXE boot handshake with WDS](../screenshots/windows-server/wds-pxe-boot.png)
+![PXE boot handshake with WDS](../screenshots/windows-server/PXE-handshake.jpg)
 
-The Windows 10 image deployed and the unattended install joined the machine to the domain automatically, without a manual domain-join step.
+The boot image streamed over the network from the WDS server:
+
+```text
+Loading files...
+IP: 10.10.10.2, File: \Boot\x64\Images\boot.wim
+```
+
+![Boot image loading from WDS](../screenshots/windows-server/PXE-loading-screen.jpg)
+
+Windows Setup launched in WDS mode, prompting for locale and keyboard layout:
+
+![WDS Windows Setup locale and keyboard selection](../screenshots/windows-server/WDS-Locale-Keyboard.jpg)
+
+Setup then required domain credentials to authenticate against the WDS server before continuing:
+
+![Credential prompt connecting to LAB-DC-01](../screenshots/windows-server/PXE-login.jpg)
+
+The staged Windows 10 Pro image was selected from the available install images:
+
+![Operating system selection: Windows 10 Pro](../screenshots/windows-server/Operating-system-install-choice.jpg)
+
+The target disk (223.6 GB unallocated) was selected for installation:
+
+![Installation drive selection](../screenshots/windows-server/Installation-drive.jpg)
+
+Windows installed over the network without further input, restarting several times as expected:
+
+![Windows installation progress](../screenshots/windows-server/Windows-installing-screen.jpg)
+
+The unattended install joined the machine to the domain automatically, without a manual domain-join step.
 
 ## Post-Imaging Cleanup
 
@@ -56,6 +85,10 @@ ipconfig /registerdns
 ```
 
 This cleared the stale local resolver cache and forced the client to re-register its `A` record in DNS under its new name, after which the computer object was visible and correctly named for the `Move-ADObject` step into the `Workstations` OU.
+
+![Confirmed rename and domain membership](../screenshots/windows-server/PC-joined-domain.jpg)
+
+`System Properties` confirms the final state: full computer name `PC01.lab.corbitpros.com`, domain `lab.corbitpros.com`.
 
 ## Skills Demonstrated
 
