@@ -156,3 +156,16 @@
 - Ran `gpupdate /force` and re-checked with `gpresult /r`.
 
 **Resolution:** `Workstations Policy` appeared in both the Computer Settings and User Settings applied lists after enabling loopback processing, and the mapped drive appeared correctly on `PC01`.
+
+## Proxmox Backup Job Writing to Local Storage Instead of PBS
+
+**Symptom:** A backup job for `ubuntu-srv-01` (VMID 100) completed with `OK` status in the task log, but the Proxmox Backup Server datastore showed `0 Groups, 0 Snapshots` — the backup didn't actually reach PBS.
+
+**Cause:** The completed backups were `.vma.zst` files on the VM's `local` storage, not PBS's format. The backup job/dialog had defaulted to `local` for the Storage field instead of the intended `pbs-backup` target.
+
+**Actions Taken:**
+
+- Confirmed the mismatch by checking the VM's Backup tab (showed backups on `local`) against the PBS Content tab (showed nothing).
+- Re-ran the backup via **Backup now**, explicitly selecting `pbs-backup` as the Storage target.
+
+**Resolution:** The PBS datastore then showed a `vm/100` backup group with a snapshot, confirmed by a subsequent test restore to a new VMID.

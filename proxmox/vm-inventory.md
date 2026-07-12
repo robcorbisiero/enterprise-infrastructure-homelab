@@ -16,6 +16,7 @@
 | VM | VMID | Node | vCPU | RAM | Disk | Role |
 | --- | --- | --- | --- | --- | --- | --- |
 | `ubuntu-srv-01` | 100 | `pve-02` | 1 | 1 GiB | 15 GiB (raw, on `Windows-NFS`) | Linux administration and Docker host. Used for SSH hardening, routing validation, and Docker setup. |
+| `pbs-01` | 101 | `pve-01` | 2 | 2 GiB | 32 GiB | Proxmox Backup Server. See [Backup and disaster recovery](backup-and-disaster-recovery.md). |
 
 ## Shared Storage Detail
 
