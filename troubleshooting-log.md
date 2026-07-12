@@ -142,3 +142,17 @@
 - Ran `ipconfig /registerdns` on the client to force re-registration of its DNS record under the new name.
 
 **Resolution:** DNS reflected the new `PC01` name, after which the computer object was correctly identifiable for the `Move-ADObject` step into the `Workstations` OU.
+
+## Workstations Policy User Settings Not Applying
+
+**Symptom:** `gpresult /r` on `PC01` showed `Workstations Policy` applied under COMPUTER SETTINGS, but USER SETTINGS showed `N/A` — the drive map and screensaver policy never reached the logged-in user, despite the GPO being correctly linked and enabled.
+
+**Cause:** `User Configuration` settings apply based on the OU containing the *user* object, not the computer. `LAB\Administrator` lives in the default `Users` container, not the `Workstations` OU, so the GPO's user-side settings were never evaluated for that logon.
+
+**Actions Taken:**
+
+- Confirmed via `gpresult /r` that the GPO was linked, enabled, and applied on the computer side but absent from user-side processing.
+- Enabled Group Policy Loopback Processing (Merge mode) on `Workstations Policy` under `Computer Configuration → Policies → Administrative Templates → System → Group Policy`.
+- Ran `gpupdate /force` and re-checked with `gpresult /r`.
+
+**Resolution:** `Workstations Policy` appeared in both the Computer Settings and User Settings applied lists after enabling loopback processing, and the mapped drive appeared correctly on `PC01`.
