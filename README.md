@@ -64,6 +64,8 @@ Documentation:
 
 Configured switch management access, restored SSH after a port/VLAN change caused a management lockout, created VLANs, assigned access ports, and began using the Catalyst switch as the core lab network device.
 
+![Cisco VLAN brief output](screenshots/networking/cisco-vlan-brief.png)
+
 ### 3. Windows Server Infrastructure
 
 Installed Windows Server 2016 after newer server driver compatibility issues with an older Wi-Fi card. Configured the server for infrastructure roles including Active Directory Domain Services, DNS, DHCP, and WDS preparation.
@@ -111,6 +113,8 @@ Documentation:
 ### 7. Organizational Units and Group Policy
 
 Finished the WDS imaging loop by PXE-booting a Windows 10 client onto a spare mini PC and joining it to the domain, then introduced `Workstations` and `Servers` OUs so Group Policy can be scoped instead of relying on the default `Computers` container. Configured domain-wide password/lockout policy on Default Domain Policy, and a `Workstations`-scoped GPO for a GPP drive mapping and a screensaver/lock-screen hardening rule.
+
+![Active Directory OU structure](screenshots/windows-server/ad-ou-structure.png)
 
 Documentation:
 
