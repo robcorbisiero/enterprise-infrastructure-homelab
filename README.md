@@ -130,6 +130,14 @@ Documentation:
 
 - [Backup and disaster recovery](proxmox/backup-and-disaster-recovery.md)
 
+### 9. Configuration Automation with Ansible
+
+Replaced the manual, repetitive `node_exporter` installs across all three Proxmox nodes (originally done by hand in Phase 6) with an idempotent Ansible playbook, plus a second playbook reproducing the Docker host setup and monitoring stack deployment.
+
+Documentation:
+
+- [Configuration automation with Ansible](ansible/automation.md)
+
 ## Skills Demonstrated
 
 - Cisco console recovery and bootloader troubleshooting
@@ -152,6 +160,7 @@ Documentation:
 - Metrics collection across virtualization hosts and containers
 - Proxmox Backup Server deployment and least-privilege service accounts
 - Backup job scheduling, retention policy, and test restore validation
+- Ansible playbook design and idempotent configuration management
 - Technical documentation and root cause analysis
 
 ## Repository Structure
@@ -160,6 +169,7 @@ Documentation:
 - [windows-server](windows-server/) - Windows Server install, AD DS, DNS, DHCP, WDS, OU, and Group Policy notes.
 - [proxmox](proxmox/) - Proxmox cluster, Windows NFS shared storage, VM inventory, backup/DR, Ubuntu Server, and Docker notes.
 - [monitoring](monitoring/) - Prometheus, Grafana, Alertmanager, and exporter configs and setup notes.
+- [ansible](ansible/) - Playbooks and inventory for automating Proxmox and Docker host configuration.
 - [diagrams](diagrams/) - Pinout and architecture diagrams.
 - [photos](photos/) - Homelab setup and DIY console cable photos.
 - [screenshots](screenshots/) - Validation screenshots for networking, Windows Server, Proxmox, Linux, and Docker.
