@@ -13,9 +13,19 @@
 
 ## Virtual Machines
 
-| VM | Role | Notes |
-| --- | --- | --- |
-| Ubuntu Server | Linux administration and Docker host | Used for SSH hardening, routing validation, and Docker setup. |
+| VM | VMID | Node | vCPU | RAM | Disk | Role |
+| --- | --- | --- | --- | --- | --- | --- |
+| `ubuntu-srv-01` | 100 | `pve-02` | 1 | 1 GiB | 15 GiB (raw, on `Windows-NFS`) | Linux administration and Docker host. Used for SSH hardening, routing validation, and Docker setup. |
+
+## Shared Storage Detail
+
+| Item | Value |
+| --- | --- |
+| Storage name | `Windows-NFS` |
+| Type | NFS |
+| Content | Disk image, ISO image, Container template |
+| Total size | 188.84 GB |
+| Used | 19.63 GB (10.39%) |
 
 ## Operational Notes
 
@@ -28,6 +38,5 @@
 
 Add the following details as the lab matures:
 
-- VM IDs
-- VM vCPU/RAM/disk allocations
-- Windows NFS export path and storage pool details
+- Windows NFS export path and storage pool details on the Windows Server side
+- Additional VMs/containers as they're deployed
