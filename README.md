@@ -110,7 +110,7 @@ Documentation:
 
 ### 7. Organizational Units and Group Policy
 
-Finished the WDS imaging loop by PXE-booting a Windows 10 client onto a spare mini PC and joining it to the domain, then introduced `Workstations` and `Servers` OUs so Group Policy can be scoped instead of relying on the default `Computers` container.
+Finished the WDS imaging loop by PXE-booting a Windows 10 client onto a spare mini PC and joining it to the domain, then introduced `Workstations` and `Servers` OUs so Group Policy can be scoped instead of relying on the default `Computers` container. Configured domain-wide password/lockout policy on Default Domain Policy, and a `Workstations`-scoped GPO for a GPP drive mapping and a screensaver/lock-screen hardening rule.
 
 Documentation:
 
