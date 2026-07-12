@@ -150,6 +150,8 @@ The `Z:` drive mapping appeared correctly under Network locations on `PC01`:
 
 ![Mapped LabShare drive validated on PC01](../screenshots/windows-server/pc01-mapped-drive-validation.png)
 
-## Next Steps
+The screensaver/lock policy was also confirmed: after the configured timeout with no input, `PC01` triggered the screensaver and required the account password to unlock, matching the `Password protect the screen saver` setting.
 
-- Confirm the screensaver lock triggers after the configured timeout on `PC01`.
+## Result
+
+`Workstations Policy` is fully validated end to end: linked to the correct OU, applying to both computer and user settings after the loopback processing fix, with the drive mapping and screensaver lock both confirmed working on `PC01`.
