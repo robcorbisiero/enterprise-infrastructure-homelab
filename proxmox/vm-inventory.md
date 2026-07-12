@@ -7,7 +7,7 @@
 | Cluster type | Three-node Proxmox VE cluster |
 | Nodes | `pve-01`, `pve-02`, `pve-03` |
 | Node IPs | `10.10.10.11`, `10.10.10.12`, `10.10.10.13` |
-| Node hardware | Intel i3-6100T, 8 GB RAM (each node) |
+| Node hardware | Intel i3-6100T, 8 GB RAM, 64 GB NVMe (each node) |
 | Shared storage | `Windows-NFS` mounted from Windows Server pooled SSD storage |
 | Expansion | Additional mini PCs available for imaging or future nodes |
 
@@ -28,7 +28,6 @@
 
 Add the following details as the lab matures:
 
-- Per-node storage (boot disk size, local storage pool)
 - VM IDs
 - VM vCPU/RAM/disk allocations
 - Windows NFS export path and storage pool details

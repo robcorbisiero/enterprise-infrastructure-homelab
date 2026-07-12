@@ -13,7 +13,7 @@
 | Device | Role | Notes |
 | --- | --- | --- |
 | Custom desktop build | Windows Server host | Intel i5-4670K, 16 GB DDR3 RAM, 256 GB SSD. Used for Windows Server infrastructure roles. |
-| Mini PCs | Proxmox cluster nodes | Three nodes (Intel i3-6100T, 8 GB RAM each) currently clustered in Proxmox. Additional mini PCs are available for imaging and expansion. |
+| Mini PCs | Proxmox cluster nodes | Three nodes (Intel i3-6100T, 8 GB RAM, 64 GB NVMe each) currently clustered in Proxmox. Additional mini PCs are available for imaging and expansion. |
 | Dell OptiPlex systems | Refurbished lab clients/hosts | Used for hardware practice and potential client imaging. |
 | Lenovo ThinkCentre systems | Refurbished lab clients/hosts | Used for hardware practice and potential client imaging. |
 
