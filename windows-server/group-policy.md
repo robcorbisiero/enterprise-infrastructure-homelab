@@ -119,6 +119,37 @@ Note this lives under **User Configuration**, not Computer Configuration — scr
 
 ![Screensaver hardening settings in Workstations Policy](../screenshots/windows-server/gpo-personalization-screensaver.png)
 
+## Troubleshooting: User Settings Not Applying
+
+Initial validation with `gpresult /r` showed `Workstations Policy` applied under **COMPUTER SETTINGS**, but **USER SETTINGS** showed no GPOs applied at all (`N/A`) — meaning the drive map and screensaver policy, both `User Configuration` settings, were never reaching the logged-in user.
+
+**Cause:** `User Configuration` settings apply based on which OU the *user object* lives in, not which OU the computer lives in. `LAB\Administrator`'s account lives in the default `Users` container (`CN=Administrator,CN=Users,DC=lab,DC=corbitpros,DC=com`), not in `Workstations` — so even though `PC01` (the computer) is correctly placed in `Workstations`, the GPO's user-side settings were never evaluated for a user object outside that OU.
+
+**Fix:** Enabled Group Policy Loopback Processing on `Workstations Policy` so user-side settings are applied based on the *computer's* OU instead of the user's:
+
+- `Workstations Policy` → `Computer Configuration → Policies → Administrative Templates → System → Group Policy` → **"Configure user Group Policy loopback processing mode"** → Enabled, mode **Merge** (keeps the user's own GPOs in addition to `Workstations Policy`, rather than replacing them).
+
+After `gpupdate /force` and a fresh `gpresult /r`, `Workstations Policy` appeared in both the Computer Settings and User Settings applied lists:
+
+```text
+COMPUTER SETTINGS
+Applied Group Policy Objects
+-----------------------------
+    Workstations Policy
+    Default Domain Policy
+
+USER SETTINGS
+Applied Group Policy Objects
+-----------------------------
+    Workstations Policy
+```
+
+## Validation
+
+The `Z:` drive mapping appeared correctly under Network locations on `PC01`:
+
+![Mapped LabShare drive validated on PC01](../screenshots/windows-server/pc01-mapped-drive-validation.png)
+
 ## Next Steps
 
-- Validate policy application on `PC01` with `gpupdate /force` and `gpresult /r`, confirming the `Z:` drive appears and the screensaver lock triggers after the configured timeout.
+- Confirm the screensaver lock triggers after the configured timeout on `PC01`.
