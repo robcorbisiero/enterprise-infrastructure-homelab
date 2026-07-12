@@ -116,6 +116,16 @@ Documentation:
 
 - [Organizational units and Group Policy](windows-server/group-policy.md)
 
+### 8. Backup and Disaster Recovery
+
+Deployed Proxmox Backup Server as a dedicated VM, configured a least-privilege backup service account, and set up a scheduled backup job with retention for the Docker host VM. Diagnosed a backup silently landing on local storage instead of PBS, then validated true recoverability with a full test restore to a new VM that booted successfully.
+
+![Restored VM booting from PBS backup](screenshots/proxmox/pbs-restore-test-boot.png)
+
+Documentation:
+
+- [Backup and disaster recovery](proxmox/backup-and-disaster-recovery.md)
+
 ## Skills Demonstrated
 
 - Cisco console recovery and bootloader troubleshooting
@@ -136,13 +146,15 @@ Documentation:
 - Docker repository and GPG-key troubleshooting
 - Prometheus, Grafana, and Alertmanager deployment
 - Metrics collection across virtualization hosts and containers
+- Proxmox Backup Server deployment and least-privilege service accounts
+- Backup job scheduling, retention policy, and test restore validation
 - Technical documentation and root cause analysis
 
 ## Repository Structure
 
 - [networking](networking/) - Cisco switch recovery, console access, VLANs, and routing notes.
 - [windows-server](windows-server/) - Windows Server install, AD DS, DNS, DHCP, WDS, OU, and Group Policy notes.
-- [proxmox](proxmox/) - Proxmox cluster, Windows NFS shared storage, VM inventory, Ubuntu Server, and Docker notes.
+- [proxmox](proxmox/) - Proxmox cluster, Windows NFS shared storage, VM inventory, backup/DR, Ubuntu Server, and Docker notes.
 - [monitoring](monitoring/) - Prometheus, Grafana, Alertmanager, and exporter configs and setup notes.
 - [diagrams](diagrams/) - Pinout and architecture diagrams.
 - [photos](photos/) - Homelab setup and DIY console cable photos.
