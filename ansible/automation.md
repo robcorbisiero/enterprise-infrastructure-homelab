@@ -69,6 +69,13 @@ ansible-playbook playbooks/docker_host.yml --ask-become-pass
 
 (`--ask-become-pass` because this one runs locally against `ubuntu-srv-01` and needs a `sudo` password rather than SSH key auth.)
 
+![Ansible docker_host playbook run](../screenshots/monitoring/ansible-docker-host-run.png)
+
+`ok=8, changed=2, failed=0`. The two `changed` tasks are worth explaining rather than glossing over:
+
+- **Add Docker apt repository** — Ansible's `apt_repository` module manages that file in its own normalized format, which differed slightly from the file created by hand back in [Docker Host Setup](../proxmox/docker-host.md), so it rewrote it. A second run of just this task would show no change.
+- **Deploy the monitoring stack** — this task always reports `changed`, on every run, regardless of whether anything actually changed. It's implemented with the generic `command` module (`docker compose up -d`), which has no way to inspect whether Docker actually created/recreated anything — it only knows whether the command executed. The underlying `docker compose up -d` itself *is* idempotent (it won't recreate already-running containers), but Ansible can't see that through a raw shell-out. Using the `community.docker.docker_compose_v2` module instead would report accurate change status; noted here as a known gap rather than something to quietly ignore.
+
 ## Validation
 
 Both playbooks were run against the live environment. `node_exporter.yml` was also re-run a second time immediately after the first to confirm idempotency:
