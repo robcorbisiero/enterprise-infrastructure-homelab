@@ -71,7 +71,11 @@ ansible-playbook playbooks/docker_host.yml --ask-become-pass
 
 ## Validation
 
-Both playbooks were run against the live environment. `node_exporter.yml` was also re-run a second time immediately after the first to confirm idempotency (no changes reported the second time), and Prometheus's **Status → Targets** page continued to show all `proxmox-nodes` targets `UP` throughout.
+Both playbooks were run against the live environment. `node_exporter.yml` was also re-run a second time immediately after the first to confirm idempotency:
+
+![Ansible node_exporter playbook idempotent re-run](../screenshots/monitoring/ansible-node-exporter-idempotent.png)
+
+The `PLAY RECAP` shows `changed=0` across all three nodes on the second run, with the download/extract/install tasks all reporting `skipping` since `node_exporter` was already present — confirming the playbook is safe to re-run without re-downloading or restarting the service unnecessarily. Prometheus's **Status → Targets** page continued to show all `proxmox-nodes` targets `UP` throughout.
 
 ## Skills Demonstrated
 
