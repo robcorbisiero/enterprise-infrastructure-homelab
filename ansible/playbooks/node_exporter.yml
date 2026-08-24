@@ -4,6 +4,8 @@
   become: true
   vars:
     node_exporter_version: "1.8.2"
+    node_exporter_checksum: "sha256:6809dd0b3ec45fd6e992c19071d6b5253aed3ead7bf0686885a51d85c6643c66"
+    node_exporter_archive: "node_exporter-{{ node_exporter_version }}.linux-amd64"
 
   tasks:
     - name: Create node_exporter system user
@@ -13,33 +15,53 @@
         shell: /usr/sbin/nologin
         create_home: false
 
-    - name: Check whether node_exporter binary is already installed
-      stat:
-        path: /usr/local/bin/node_exporter
-      register: node_exporter_binary
+    - name: Check which node_exporter version is currently installed
+      command: /usr/local/bin/node_exporter --version
+      register: node_exporter_installed
+      changed_when: false
+      failed_when: false
+
+    - name: Decide whether node_exporter needs installing or upgrading
+      set_fact:
+        node_exporter_install_required: >-
+          {{ node_exporter_installed.rc != 0
+             or ('version ' ~ node_exporter_version) not in
+                (node_exporter_installed.stdout | default('')
+                 ~ node_exporter_installed.stderr | default('')) }}
 
     - name: Download node_exporter release
       get_url:
-        url: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
-        dest: /tmp/node_exporter.tar.gz
-      when: not node_exporter_binary.stat.exists
+        url: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/{{ node_exporter_archive }}.tar.gz"
+        dest: "/tmp/{{ node_exporter_archive }}.tar.gz"
+        checksum: "{{ node_exporter_checksum }}"
+      when: node_exporter_install_required | bool
 
     - name: Extract node_exporter archive
       unarchive:
-        src: /tmp/node_exporter.tar.gz
+        src: "/tmp/{{ node_exporter_archive }}.tar.gz"
         dest: /tmp
         remote_src: true
-      when: not node_exporter_binary.stat.exists
+      when: node_exporter_install_required | bool
 
     - name: Install node_exporter binary
       copy:
-        src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
+        src: "/tmp/{{ node_exporter_archive }}/node_exporter"
         dest: /usr/local/bin/node_exporter
         owner: node_exporter
         group: node_exporter
         mode: "0755"
         remote_src: true
-      when: not node_exporter_binary.stat.exists
+      when: node_exporter_install_required | bool
+      notify: restart node_exporter
+
+    - name: Remove node_exporter download artifacts
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "/tmp/{{ node_exporter_archive }}.tar.gz"
+        - "/tmp/{{ node_exporter_archive }}"
+      when: node_exporter_install_required | bool
 
     - name: Install node_exporter systemd unit
       template:
@@ -59,3 +81,4 @@
       systemd:
         name: node_exporter
         state: restarted
+        daemon_reload: true

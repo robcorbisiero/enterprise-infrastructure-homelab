@@ -4,6 +4,7 @@
   become: true
   vars:
     repo_path: "/home/administrator/enterprise-infrastructure-homelab"
+    repo_url: "https://github.com/robcorbisiero/enterprise-infrastructure-homelab.git"
 
   tasks:
     - name: Install prerequisite packages
@@ -26,9 +27,14 @@
         dest: /etc/apt/keyrings/docker.asc
         mode: "0644"
 
+    - name: Resolve the dpkg architecture for the apt repository
+      command: dpkg --print-architecture
+      register: dpkg_architecture
+      changed_when: false
+
     - name: Add Docker apt repository
       apt_repository:
-        repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        repo: "deb [arch={{ dpkg_architecture.stdout }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
         state: present
         filename: docker
 
@@ -48,7 +54,14 @@
         enabled: true
         state: started
 
+    - name: Ensure the homelab repo is present on the Docker host
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ repo_path }}"
+        version: main
+        update: false
+
     - name: Deploy the monitoring stack
-      command: docker compose up -d
-      args:
-        chdir: "{{ repo_path }}/monitoring"
+      community.docker.docker_compose_v2:
+        project_src: "{{ repo_path }}/monitoring"
+        state: present
