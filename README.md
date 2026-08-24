@@ -20,6 +20,7 @@ The purpose of the lab is to build and prove practical systems administration sk
 - Ubuntu Server VM deployed inside Proxmox.
 - SSH key-based authentication configured for the Ubuntu VM.
 - Docker installed on Ubuntu Server with Portainer running for container management.
+- Tailscale mesh VPN on the Windows Server host for remote access from outside the lab, with no inbound port forwarding on the home router.
 - Physical setup and DIY console cable photos are archived in [photos](photos/).
 - Validation screenshots are archived in [screenshots](screenshots/).
 
@@ -138,6 +139,14 @@ Documentation:
 
 - [Configuration automation with Ansible](ansible/automation.md)
 
+### 10. Remote Access with Tailscale
+
+Added remote access to the lab using Tailscale, a WireGuard-based mesh VPN, installed on the Windows Server host and a personal PC. Remoting into the Windows Server host over the tailnet provides a single authenticated entry point to the rest of the lab, with no RDP or SSH exposed to the internet and no port forwarding configured on the home router.
+
+Documentation:
+
+- [Remote access with Tailscale](networking/remote-access-tailscale.md)
+
 ## Skills Demonstrated
 
 - Cisco console recovery and bootloader troubleshooting
@@ -161,11 +170,13 @@ Documentation:
 - Proxmox Backup Server deployment and least-privilege service accounts
 - Backup job scheduling, retention policy, and test restore validation
 - Ansible playbook design and idempotent configuration management
+- Mesh VPN (WireGuard/Tailscale) deployment for secure remote administration
+- Remote access design without inbound port forwarding
 - Technical documentation and root cause analysis
 
 ## Repository Structure
 
-- [networking](networking/) - Cisco switch recovery, console access, VLANs, and routing notes.
+- [networking](networking/) - Cisco switch recovery, console access, VLANs, routing, and remote access (Tailscale) notes.
 - [windows-server](windows-server/) - Windows Server install, AD DS, DNS, DHCP, WDS, OU, and Group Policy notes.
 - [proxmox](proxmox/) - Proxmox cluster, Windows NFS shared storage, VM inventory, backup/DR, Ubuntu Server, and Docker notes.
 - [monitoring](monitoring/) - Prometheus, Grafana, Alertmanager, and exporter configs and setup notes.
