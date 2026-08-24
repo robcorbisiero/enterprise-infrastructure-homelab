@@ -8,7 +8,7 @@
 
   tasks:
     - name: Install prerequisite packages
-      apt:
+      ansible.builtin.apt:
         name:
           - ca-certificates
           - curl
@@ -16,30 +16,34 @@
         update_cache: true
 
     - name: Ensure keyrings directory exists
-      file:
+      ansible.builtin.file:
         path: /etc/apt/keyrings
         state: directory
         mode: "0755"
 
     - name: Add Docker's GPG key
-      get_url:
+      ansible.builtin.get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
         dest: /etc/apt/keyrings/docker.asc
         mode: "0644"
 
     - name: Resolve the dpkg architecture for the apt repository
-      command: dpkg --print-architecture
+      ansible.builtin.command: dpkg --print-architecture
       register: dpkg_architecture
       changed_when: false
 
     - name: Add Docker apt repository
-      apt_repository:
-        repo: "deb [arch={{ dpkg_architecture.stdout }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch={{ dpkg_architecture.stdout }}
+          signed-by=/etc/apt/keyrings/docker.asc]
+          https://download.docker.com/linux/ubuntu
+          {{ ansible_distribution_release }} stable
         state: present
         filename: docker
 
     - name: Install Docker packages
-      apt:
+      ansible.builtin.apt:
         name:
           - docker-ce
           - docker-ce-cli
@@ -49,13 +53,13 @@
         update_cache: true
 
     - name: Ensure Docker service is enabled and running
-      systemd:
+      ansible.builtin.systemd:
         name: docker
         enabled: true
         state: started
 
     - name: Ensure the homelab repo is present on the Docker host
-      git:
+      ansible.builtin.git:
         repo: "{{ repo_url }}"
         dest: "{{ repo_path }}"
         version: main

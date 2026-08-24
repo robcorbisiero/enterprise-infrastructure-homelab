@@ -26,13 +26,20 @@ Files live in [monitoring](.) alongside this doc:
 - `alert.rules.yml` - alerting rules (node down, high CPU, low disk, high memory)
 - `alertmanager.yml` - alert routing (default receiver is a placeholder; add real notification config before relying on it)
 - `grafana/provisioning/datasources/prometheus.yml` - auto-provisions Prometheus as the default Grafana datasource
+- `.env.example` - template for the Grafana admin credentials (copy to `.env`, which is gitignored)
 
 On the Ubuntu Docker host:
 
 ```bash
 cd monitoring
+cp .env.example .env      # then set GRAFANA_ADMIN_PASSWORD
 docker compose up -d
 ```
+
+Grafana's admin credentials come from `monitoring/.env`, which is gitignored.
+`GRAFANA_ADMIN_PASSWORD` is declared as a required variable in the compose file,
+so Compose refuses to start the stack if it isn't set — the stack can't quietly
+come up on the default `admin/admin` login.
 
 On each Proxmox node (`pve-01`, `pve-02`, `pve-03`):
 
@@ -88,7 +95,7 @@ Grafana:      http://10.10.10.103:3000
 
 - Prometheus **Status > Targets** shows all targets (`docker-host`, `docker-containers`, and all three `proxmox-nodes`) as `UP`.
 - Grafana loads with the Prometheus datasource already configured (no manual setup).
-- Triggering a test condition (e.g. stopping a Proxmox node's `node_exporter` service) produces a firing alert in Prometheus **Alerts** and a corresponding notification in Alertmanager.
+- Triggering a test condition (e.g. stopping a Proxmox node's `node_exporter` service) produces a firing alert in Prometheus **Alerts**, which then appears in the Alertmanager UI. Note that the `default` receiver is currently a *null* receiver — the alert routes and is visible, but nothing is dispatched to email or a webhook until a real receiver is configured.
 
 ![Prometheus targets all up](../screenshots/monitoring/prometheus-targets-all-up.png)
 

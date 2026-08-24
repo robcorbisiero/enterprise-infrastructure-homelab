@@ -1,3 +1,4 @@
+---
 global:
   resolve_timeout: 5m
 
@@ -8,12 +9,17 @@ route:
   group_interval: 5m
   repeat_interval: 3h
 
+# "default" is a null receiver: alerts route here and show in the Alertmanager
+# UI, but nothing is dispatched anywhere. Replace with a real receiver before
+# relying on this for notification, for example:
+#
+#   receivers:
+#     - name: "default"
+#       email_configs:
+#         - to: "you@example.com"
+#           from: "alertmanager@corbitpros.com"
+#           smarthost: "smtp.example.com:587"
+#           auth_username: "alertmanager@corbitpros.com"
+#           auth_password: "app-password-here"
 receivers:
   - name: "default"
-    # Replace with a real receiver before relying on this for alerting, for example:
-    # email_configs:
-    #   - to: "you@example.com"
-    #     from: "alertmanager@corbitpros.com"
-    #     smarthost: "smtp.example.com:587"
-    #     auth_username: "alertmanager@corbitpros.com"
-    #     auth_password: "app-password-here"
