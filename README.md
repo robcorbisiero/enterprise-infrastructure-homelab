@@ -22,6 +22,10 @@ It started with a switch that wouldn't boot and a homemade console cable. From t
 
 ![Homelab topology](diagrams/homelab-topology.svg)
 
+[Open full-size SVG](diagrams/homelab-topology.svg) · [PNG copy](diagrams/homelab-topology.png)
+
+The solid lines show lab connections; the dashed NFS and backup paths are logical flows over that network. VMs sit inside the Proxmox node that hosted them during the build.
+
 | Segment | Use | Network |
 | --- | --- | --- |
 | VLAN 1 | Initial switch management and recovery | Depended on the home network |
