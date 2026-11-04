@@ -1,12 +1,12 @@
-# Screenshot Evidence
+# Lab screenshots
 
-This folder contains validation screenshots for the homelab build.
+Screenshots I kept while building and testing the lab. These show the state at the time I took them.
 
 ## Gallery
 
 ### Cisco Switching
 
-| Screenshot | Evidence |
+| Screenshot | What it shows |
 | --- | --- |
 | ![Cisco show version](networking/cisco-show-version.png) | Cisco Catalyst 3750 IOS and boot image validation. |
 | ![Cisco VLAN brief](networking/cisco-vlan-brief.png) | VLANs including `Corporate_Data`, `IoT_Devices`, `Guest_Network`, and `WAN`. |
@@ -15,7 +15,7 @@ This folder contains validation screenshots for the homelab build.
 
 ### Windows Server
 
-| Screenshot | Evidence |
+| Screenshot | What it shows |
 | --- | --- |
 | ![Server Manager dashboard](windows-server/server-manager-dashboard.png) | Windows Server roles installed and manageable. |
 | ![Active Directory](windows-server/active-directory-domain-controllers.png) | Domain controller object under `lab.corbitpros.com`. |
@@ -25,7 +25,7 @@ This folder contains validation screenshots for the homelab build.
 
 ### Proxmox, Linux, and Docker
 
-| Screenshot | Evidence |
+| Screenshot | What it shows |
 | --- | --- |
 | ![Proxmox cluster summary](proxmox/cluster-summary.png) | `Corbit-Cloud` Proxmox cluster with three online nodes. |
 | ![Ubuntu VM summary](proxmox/ubuntu-vm-summary.png) | Ubuntu Server VM running on Proxmox. |

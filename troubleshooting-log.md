@@ -1,4 +1,6 @@
-# Troubleshooting Log
+# Things I had to fix
+
+These are the problems I ran into while building the lab. Where I only narrowed something down, I have kept that separate from a confirmed cause.
 
 ## Cisco Switch Entered `switch:` Bootloader Prompt
 
@@ -6,14 +8,14 @@
 
 **Cause:** The switch was in bootloader/recovery mode and could not complete the normal boot path automatically.
 
-**Actions Taken:**
+**What I did:**
 
-- Built temporary serial access from a StarTech USB-to-DB9 adapter, Ethernet cable, and Dupont wires.
-- Opened PuTTY on Windows 11 using the detected COM port.
-- Used standard serial settings: 9600 baud, 8 data bits, no parity, 1 stop bit, no flow control.
-- Ran bootloader commands including `flash_init`, `dir flash:`, `unset BOOT`, and manual `boot flash:/...`.
+- I built temporary serial access from a StarTech USB-to-DB9 adapter, Ethernet cable, and Dupont wires.
+- I opened PuTTY on Windows 11 using the detected COM port.
+- I used standard serial settings: 9600 baud, 8 data bits, no parity, 1 stop bit, no flow control.
+- I ran bootloader commands including `flash_init`, `dir flash:`, `unset BOOT`, and manual `boot flash:/...`.
 
-**Resolution:** Switch booted into IOS and reached the default `Switch>`/enable workflow.
+**What worked:** Switch booted into IOS and reached the default `Switch>`/enable workflow.
 
 ## Manual IOS Boot Returned `invalid argument`
 
@@ -21,13 +23,13 @@
 
 **Cause:** The bootloader had trouble parsing the IOS path.
 
-**Actions Taken:**
+**What I did:**
 
-- Inspected flash contents.
-- Cleared stale BOOT variables.
-- Retried the boot with a full flash path.
+- I inspected flash contents.
+- I cleared stale BOOT variables.
+- I retried the boot with a full flash path.
 
-**Resolution:** The switch successfully booted after correcting the boot path and environment.
+**What worked:** The switch successfully booted after correcting the boot path and environment.
 
 ## Lost SSH After Reconfiguring Port 1
 
@@ -35,28 +37,28 @@
 
 **Cause:** The active management path depended on the same uplink/port being changed.
 
-**Actions Taken:**
+**What I did:**
 
-- Used console/local access to recover.
-- Restored the management path.
-- Confirmed SSH returned before continuing VLAN work.
+- I used console/local access to recover.
+- I restored the management path.
+- I confirmed SSH returned before continuing VLAN work.
 
-**Resolution:** SSH management access was restored.
+**What worked:** SSH management access was restored.
 
 ## Windows Server Had No Internet Through Lab Switch
 
 **Symptom:** Windows Server connected to port 2 on the switch but had no internet access. Initial pings from the switch to `10.10.10.2` failed.
 
-**Cause:** The lab network path, server addressing, firewall, and gateway assumptions needed to be aligned.
+**What I checked:** The lab network path, server addressing, firewall, and gateway settings. I did not isolate a single cause.
 
-**Actions Taken:**
+**What I did:**
 
-- Verified switch port placement.
-- Checked server IP configuration.
-- Tested ping from the switch to the server.
-- Adjusted the setup until the switch could successfully ping the server.
+- I verified switch port placement.
+- I checked server IP configuration.
+- I tested ping from the switch to the server.
+- I adjusted the setup until the switch could successfully ping the server.
 
-**Resolution:** Switch-to-server connectivity was restored. Internet routing required additional design work because the server used Wi-Fi for upstream access and Ethernet for the lab network.
+**What worked:** Switch-to-server connectivity was restored. Internet routing required additional design work because the server used Wi-Fi for upstream access and Ethernet for the lab network.
 
 ## Wi-Fi Adapter Driver Failed on Newer Windows Server
 
@@ -64,28 +66,28 @@
 
 **Cause:** The older Wi-Fi adapter from a Gateway DX4860 did not work cleanly with the newer Windows Server version.
 
-**Actions Taken:**
+**What I did:**
 
-- Checked Device Manager.
-- Reviewed hardware ID details.
+- I checked Device Manager.
+- I reviewed hardware ID details.
 - Tried driver installation.
-- Downgraded the server OS.
+- I downgraded the server OS.
 
-**Resolution:** Windows Server 2016 recognized the Wi-Fi card and allowed the lab build to continue.
+**What worked:** Windows Server 2016 recognized the Wi-Fi card and allowed the lab build to continue.
 
 ## DHCP Authorization/Visibility Issue
 
 **Symptom:** DHCP did not initially appear as expected, and the server showed APIPA behavior during setup.
 
-**Cause:** DHCP authorization and interface placement needed to be checked in the Windows Server console.
+**What I checked:** DHCP authorization and interface placement. The server was already authorized, so I did not confirm an authorization fault.
 
-**Actions Taken:**
+**What I did:**
 
-- Reviewed the authorized DHCP servers list.
-- Confirmed the DHCP server was already authorized.
+- I reviewed the authorized DHCP servers list.
+- I confirmed the DHCP server was already authorized.
 - Rechecked the server role state.
 
-**Resolution:** DHCP appeared correctly in the management list and began working.
+**What worked:** DHCP appeared correctly in the management list and began working.
 
 ## Ubuntu VM Routing/DNS Issues
 
@@ -93,14 +95,14 @@
 
 **Cause:** The VM needed the correct gateway and nameserver behavior for the Windows Server/NAT-style lab path.
 
-**Actions Taken:**
+**What I did:**
 
-- Reviewed default gateway settings.
-- Checked Windows routing behavior.
-- Updated the Ubuntu network configuration.
+- I reviewed default gateway settings.
+- I checked Windows routing behavior.
+- I updated the Ubuntu network configuration.
 - Forced network configuration refresh.
 
-**Resolution:** Connectivity began working after the routing/DNS path was corrected.
+**What worked:** Connectivity began working after the routing/DNS path was corrected.
 
 ## SSH Service Name on Ubuntu
 
@@ -108,12 +110,12 @@
 
 **Cause:** Ubuntu/Debian commonly uses the service name `ssh`.
 
-**Actions Taken:**
+**What I did:**
 
-- Restarted the service with `sudo systemctl restart ssh`.
-- Verified service state with `sudo systemctl status ssh`.
+- I restarted the service with `sudo systemctl restart ssh`.
+- I verified service state with `sudo systemctl status ssh`.
 
-**Resolution:** SSH service restarted correctly and key-based access continued to work.
+**What worked:** SSH service restarted correctly and key-based access continued to work.
 
 ## Docker Repository GPG Key Error
 
@@ -121,27 +123,27 @@
 
 **Cause:** The Docker repository file existed, but the GPG key was missing, unreadable, or not located at the path referenced by `signed-by=`.
 
-**Actions Taken:**
+**What I did:**
 
-- Identified an earlier typo using `sources.list.y` instead of `sources.list.d`.
-- Recreated the Docker repository file.
-- Attempted to place Docker's GPG key under `/etc/apt/keyrings/`.
-- Switched the plan toward using a readable `.asc` key path.
+- I identified an earlier typo using `sources.list.y` instead of `sources.list.d`.
+- I recreated the Docker repository file.
+- I attempted to place Docker's GPG key under `/etc/apt/keyrings/`.
+- I switched the plan toward using a readable `.asc` key path.
 
-**Resolution:** Docker installation was completed after correcting the repository/key workflow. Portainer was deployed successfully and is running on the Ubuntu server at `10.10.10.103` using HTTPS port `9443`.
+**What worked:** Docker installation was completed after correcting the repository/key workflow. Portainer was deployed successfully and is running on the Ubuntu server at `10.10.10.103` using HTTPS port `9443`.
 
 ## Stale DNS Record After Renaming a Domain-Joined Client
 
 **Symptom:** After renaming the WDS-imaged Windows 10 client to `PC01`, the computer object couldn't be cleanly located/moved into the new `Workstations` OU under its new name.
 
-**Cause:** Renaming a domain-joined machine doesn't immediately update its DNS `A` record — the old name/record lingered until the client re-registered itself.
+**What I checked:** The renamed client's DNS registration and AD computer name. I did not prove that DNS caused the AD lookup problem.
 
-**Actions Taken:**
+**What I did:**
 
-- Ran `ipconfig /flushdns` on the client to clear the stale local resolver cache.
-- Ran `ipconfig /registerdns` on the client to force re-registration of its DNS record under the new name.
+- I ran `ipconfig /flushdns` on the client to clear the stale local resolver cache.
+- I ran `ipconfig /registerdns` on the client to force re-registration of its DNS record under the new name.
 
-**Resolution:** DNS reflected the new `PC01` name, after which the computer object was correctly identifiable for the `Move-ADObject` step into the `Workstations` OU.
+**What worked:** After the rename, reboot, and DNS refresh, I located `PC01` and moved it into `Workstations`. The DNS commands do not rename the AD object.
 
 ## Workstations Policy User Settings Not Applying
 
@@ -149,13 +151,13 @@
 
 **Cause:** `User Configuration` settings apply based on the OU containing the *user* object, not the computer. `LAB\Administrator` lives in the default `Users` container, not the `Workstations` OU, so the GPO's user-side settings were never evaluated for that logon.
 
-**Actions Taken:**
+**What I did:**
 
-- Confirmed via `gpresult /r` that the GPO was linked, enabled, and applied on the computer side but absent from user-side processing.
-- Enabled Group Policy Loopback Processing (Merge mode) on `Workstations Policy` under `Computer Configuration → Policies → Administrative Templates → System → Group Policy`.
-- Ran `gpupdate /force` and re-checked with `gpresult /r`.
+- I confirmed via `gpresult /r` that the GPO was linked, enabled, and applied on the computer side but absent from user-side processing.
+- I enabled Group Policy Loopback Processing (Merge mode) on `Workstations Policy` under `Computer Configuration → Policies → Administrative Templates → System → Group Policy`.
+- I ran `gpupdate /force` and re-checked with `gpresult /r`.
 
-**Resolution:** `Workstations Policy` appeared in both the Computer Settings and User Settings applied lists after enabling loopback processing, and the mapped drive appeared correctly on `PC01`.
+**What worked:** `Workstations Policy` appeared in both the Computer Settings and User Settings applied lists after enabling loopback processing, and the mapped drive appeared correctly on `PC01`.
 
 ## Proxmox Backup Job Writing to Local Storage Instead of PBS
 
@@ -163,9 +165,9 @@
 
 **Cause:** The completed backups were `.vma.zst` files on the VM's `local` storage, not PBS's format. The backup job/dialog had defaulted to `local` for the Storage field instead of the intended `pbs-backup` target.
 
-**Actions Taken:**
+**What I did:**
 
-- Confirmed the mismatch by checking the VM's Backup tab (showed backups on `local`) against the PBS Content tab (showed nothing).
-- Re-ran the backup via **Backup now**, explicitly selecting `pbs-backup` as the Storage target.
+- I confirmed the mismatch by checking the VM's Backup tab (showed backups on `local`) against the PBS Content tab (showed nothing).
+- I re-ran the backup via **Backup now**, explicitly selecting `pbs-backup` as the Storage target.
 
-**Resolution:** The PBS datastore then showed a `vm/100` backup group with a snapshot, confirmed by a subsequent test restore to a new VMID.
+**What worked:** The PBS datastore then showed a `vm/100` backup group with a snapshot, confirmed by a subsequent test restore to a new VMID.

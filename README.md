@@ -1,182 +1,93 @@
-# Enterprise Infrastructure Homelab
+# My Infrastructure Homelab
 
-<img src="photos/homelab-setup-01.jpg" alt="Enterprise infrastructure homelab setup with Cisco switch, Windows Server host, and mini PCs" width="760">
+<img src="photos/homelab-setup-01.jpg" alt="My homelab: Cisco switch, Windows Server desktop, and mini PCs" width="760">
 
-## Overview
+I built this lab out of refurbished desktops, mini PCs, and a Cisco 3750G. I wanted to get hands-on with the stuff I'd be supporting as a systems administrator: switching, Active Directory, Windows deployment, virtualization, Linux, backups, and monitoring.
 
-This repository documents an enterprise-style infrastructure homelab built from refurbished desktop hardware, a Cisco Catalyst switch, Windows Server, Proxmox VE, Ubuntu Server, Active Directory, DHCP, DNS, WDS, SSH, Docker, Portainer, and shared storage.
+It started with a switch that wouldn't boot and a homemade console cable. From there I built a three-node Proxmox cluster, set up Windows Server services, imaged a client over the network, and got a Docker host backed up and monitored. These are my notes, commands, photos, and screenshots from that build. They describe what I tested at the time, rather than a live status page.
 
-The purpose of the lab is to build and prove practical systems administration skills: recovering hardware, configuring switching, deploying directory services, building virtualization infrastructure, troubleshooting routing, and documenting the work in a professional format.
+## The setup
 
-## Current Architecture
-
-- Cisco Catalyst 3750G switch used as the core lab switch.
-- Windows Server 2016 host used for lab infrastructure roles.
-- Active Directory domain based on `corbitpros.com`.
-- DNS and DHCP configured on Windows Server.
-- Windows Deployment Services prepared for imaging mini PCs.
-- Three Proxmox VE mini PCs clustered together.
-- Windows NFS shared storage added to Proxmox from pooled SSD storage.
-- Ubuntu Server VM deployed inside Proxmox.
-- SSH key-based authentication configured for the Ubuntu VM.
-- Docker installed on Ubuntu Server with Portainer running for container management.
-- Physical setup and DIY console cable photos are archived in [photos](photos/).
-- Validation screenshots are archived in [screenshots](screenshots/).
-
-## Network Design
-
-| Segment | Purpose | Example Addressing |
-| --- | --- | --- |
-| VLAN 1 | Initial switch management and recovery access | Existing/home-network dependent |
-| VLAN 10 | Core lab/server network | `10.10.10.0/24` |
-| VLAN 20 | Secondary/IoT-style test network | `10.20.20.0/24` |
-| Router uplink | Internet access during build phases | Home router dependent |
-
-The network started as a simple router-to-switch connection, then evolved into a routed lab network with Windows Server providing core infrastructure services and Proxmox hosts connected through the Cisco switch.
-
-## Topology
-
-![Enterprise homelab topology](diagrams/homelab-topology.svg)
-
-## Physical Build
-
-| Homelab setup | DIY console cable |
+| Hardware | What I used it for |
 | --- | --- |
-| <img src="photos/homelab-setup-01.jpg" alt="Homelab setup with monitor, Cisco switch, server hardware, and mini PCs" width="360"> | <img src="photos/diy-console-cable-01.jpg" alt="Temporary DIY console cable connected to a StarTech USB to DB9 adapter" width="360"> |
+| Cisco Catalyst 3750G | Lab switching, VLANs, and management access |
+| Custom desktop: i5-4670K, 16 GB DDR3, 256 GB SSD | Windows Server 2016: AD DS, DNS, DHCP, WDS, and NFS storage |
+| Three mini PCs: i3-6100T, 8 GB RAM, 64 GB NVMe each | Proxmox nodes `pve-01`, `pve-02`, and `pve-03` |
+| Pooled SSDs on Windows Server | Shared storage mounted in Proxmox as `Windows-NFS` |
+| Spare mini PC | Windows 10 client deployed through WDS |
 
-Additional photos are available in [photos](photos/).
+[Full hardware list](hardware-inventory.md) · [VM inventory](proxmox/vm-inventory.md) · [Photos](photos/) · [Screenshots](screenshots/)
 
-## Major Build Phases
+## Network
 
-### 1. Cisco Switch Recovery
+![Homelab topology](diagrams/homelab-topology.svg)
 
-Recovered a Cisco Catalyst 3750G from the `switch:` bootloader prompt using a temporary handmade serial console connection, PuTTY, flash inspection, BOOT variable cleanup, and manual IOS boot commands.
+| Segment | Use | Network |
+| --- | --- | --- |
+| VLAN 1 | Initial switch management and recovery | Depended on the home network |
+| VLAN 10 | Lab servers and management | `10.10.10.0/24` |
+| VLAN 20 | Secondary/IoT test segment | `10.20.20.0/24` |
 
-![DIY Cisco console cable pinout](diagrams/diy-console-cable-pinout.svg)
+The AD domain was `lab.corbitpros.com`. The Windows Server desktop used Wi-Fi for upstream internet and Ethernet for the lab switch. That arrangement gave me a few routing and DNS problems to work through before the Ubuntu VM could reach the internet reliably.
 
-Documentation:
+## What I built
 
-- [Cisco switch recovery](networking/cisco-switch-recovery.md)
-- [Serial console access](networking/switch-console-access.md)
-- [Cisco 3750G lab configuration](networking/cisco-3750g-lab.md)
+### Getting the Cisco switch working
 
-### 2. Switching and VLAN Labs
+The 3750G was stuck at `switch:`. I didn't have a Cisco console cable, so I put together a temporary connection with a StarTech USB-to-DB9 adapter, an Ethernet cable, and Dupont wires. Once PuTTY connected, I inspected flash, cleared the BOOT variable, and booted IOS using the full image path.
 
-Configured switch management access, restored SSH after a port/VLAN change caused a management lockout, created VLANs, assigned access ports, and began using the Catalyst switch as the core lab network device.
+<img src="photos/diy-console-cable-01.jpg" alt="My temporary serial console cable" width="480">
 
-![Cisco VLAN brief output](screenshots/networking/cisco-vlan-brief.png)
+[Console cable and pinout](networking/switch-console-access.md) · [Recovery commands](networking/cisco-switch-recovery.md) · [VLAN and switch notes](networking/cisco-3750g-lab.md)
 
-### 3. Windows Server Infrastructure
+### Windows Server, Active Directory, and imaging
 
-Installed Windows Server 2016 after newer server driver compatibility issues with an older Wi-Fi card. Configured the server for infrastructure roles including Active Directory Domain Services, DNS, DHCP, and WDS preparation.
+I originally tried Windows Server 2025, but the older Wi-Fi card kept giving me driver errors. Server 2016 worked with the hardware, so I used that for AD DS, DNS, DHCP, and WDS.
 
-![Windows Server Manager dashboard](screenshots/windows-server/server-manager-dashboard.png)
-
-Documentation:
-
-- [Windows Server 2016 install](windows-server/windows-server-2016-install.md)
-- [Active Directory](windows-server/active-directory.md)
-- [Windows Deployment Services](windows-server/windows-deployment-services.md)
-
-### 4. Proxmox Cluster and Shared Storage
-
-Installed Proxmox VE on mini PCs, created a three-node cluster, configured the no-subscription repository path, and attached Windows NFS shared storage backed by pooled SSDs.
-
-![Proxmox cluster summary](screenshots/proxmox/cluster-summary.png)
-
-Documentation:
-
-- [Proxmox VM inventory](proxmox/vm-inventory.md)
-- [Windows NFS shared storage](proxmox/windows-nfs-storage.md)
-
-### 5. Ubuntu Server and Secure Administration
-
-Created an Ubuntu Server VM, fixed routing/DNS issues through the Windows Server gateway path, generated SSH keys, configured passwordless login, and hardened SSH by disabling password authentication.
-
-![Portainer running on Docker](screenshots/docker/portainer-container-running.png)
-
-Documentation:
-
-- [Ubuntu Server VM](proxmox/ubuntu-server-vm.md)
-- [Docker host setup](proxmox/docker-host.md)
-
-### 6. Monitoring and Alerting
-
-Deployed a Prometheus, Grafana, node-exporter, cAdvisor, and Alertmanager stack on the Docker host, with `node_exporter` installed natively on each Proxmox VE node so cluster hosts are monitored alongside the Docker VM and its containers.
-
-![Prometheus targets all up](screenshots/monitoring/prometheus-targets-all-up.png)
-
-Documentation:
-
-- [Monitoring and alerting stack](monitoring/monitoring-stack.md)
-
-### 7. Organizational Units and Group Policy
-
-Finished the WDS imaging loop by PXE-booting a Windows 10 client onto a spare mini PC and joining it to the domain, then introduced `Workstations` and `Servers` OUs so Group Policy can be scoped instead of relying on the default `Computers` container. Configured domain-wide password/lockout policy on Default Domain Policy, and a `Workstations`-scoped GPO for a GPP drive mapping and a screensaver/lock-screen hardening rule.
+I used WDS to PXE-boot a spare mini PC, install Windows 10, and join it to the domain. After renaming it `PC01`, I moved it into a `Workstations` OU and tested a mapped drive and screensaver lock through Group Policy. The user settings needed loopback processing before they applied correctly.
 
 ![Active Directory OU structure](screenshots/windows-server/ad-ou-structure.png)
 
-Documentation:
+[Server install](windows-server/windows-server-2016-install.md) · [AD, DNS, and DHCP](windows-server/active-directory.md) · [WDS walkthrough](windows-server/windows-deployment-services.md) · [Group Policy commands and fixes](windows-server/group-policy.md)
 
-- [Organizational units and Group Policy](windows-server/group-policy.md)
+### Proxmox, shared storage, and Docker
 
-### 8. Backup and Disaster Recovery
+I clustered three mini PCs and mounted the Windows Server SSD pool over NFS. The Ubuntu VM ran on `pve-02` with a 15 GiB disk on that shared storage. I set up SSH keys, tested a second login before disabling passwords, then installed Docker and Portainer.
 
-Deployed Proxmox Backup Server as a dedicated VM, configured a least-privilege backup service account, and set up a scheduled backup job with retention for the Docker host VM. Diagnosed a backup silently landing on local storage instead of PBS, then validated true recoverability with a full test restore to a new VM that booted successfully.
+![Proxmox cluster summary](screenshots/proxmox/cluster-summary.png)
 
-![Restored VM booting from PBS backup](screenshots/proxmox/pbs-restore-test-boot.png)
+[Cluster and VMs](proxmox/vm-inventory.md) · [Windows NFS](proxmox/windows-nfs-storage.md) · [Ubuntu and SSH](proxmox/ubuntu-server-vm.md) · [Docker setup](proxmox/docker-host.md)
 
-Documentation:
+### Monitoring and automation
 
-- [Backup and disaster recovery](proxmox/backup-and-disaster-recovery.md)
+I deployed Prometheus, Grafana, Alertmanager, node-exporter, and cAdvisor on the Docker host, with a native node_exporter service on each Proxmox node. The screenshot below shows the scrape targets reachable during testing. Alertmanager's notification receiver is still a placeholder in the checked-in config.
 
-### 9. Configuration Automation with Ansible
+![Prometheus targets during testing](screenshots/monitoring/prometheus-targets-all-up.png)
 
-Replaced the manual, repetitive `node_exporter` installs across all three Proxmox nodes (originally done by hand in Phase 6) with an idempotent Ansible playbook, plus a second playbook reproducing the Docker host setup and monitoring stack deployment.
+After installing node_exporter manually on all three nodes, I wrote an Ansible playbook to repeat the setup. Its second run reported `changed=0` on all three. The Docker playbook also ran successfully, though its Compose command still reports a change every time; I've kept that limitation in the notes.
 
-Documentation:
+[Monitoring setup and configs](monitoring/monitoring-stack.md) · [Ansible playbooks and run results](ansible/automation.md)
 
-- [Configuration automation with Ansible](ansible/automation.md)
+### Backups I actually restored
 
-## Skills Demonstrated
+I set up Proxmox Backup Server and a daily job for the Ubuntu VM. The first backup said `OK`, but the PBS datastore was empty: I'd left the destination on `local`. Selecting `pbs-backup` fixed that.
 
-- Cisco console recovery and bootloader troubleshooting
-- Serial pinout troubleshooting and PuTTY access
-- Cisco IOS switching configuration
-- VLAN planning and port assignment
-- Layer 3 network troubleshooting
-- Windows Server installation and driver validation
-- Active Directory Domain Services
-- DNS and DHCP administration
-- WDS imaging preparation
-- Proxmox VE installation and clustering
-- Proxmox shared storage integration
-- Windows NFS storage pooling and export concepts
-- Ubuntu Server administration
-- SSH key generation, public key deployment, and daemon hardening
-- Docker, Docker Compose, and Portainer deployment
-- Docker repository and GPG-key troubleshooting
-- Prometheus, Grafana, and Alertmanager deployment
-- Metrics collection across virtualization hosts and containers
-- Proxmox Backup Server deployment and least-privilege service accounts
-- Backup job scheduling, retention policy, and test restore validation
-- Ansible playbook design and idempotent configuration management
-- Technical documentation and root cause analysis
+I restored the PBS snapshot into a separate VM (`999`) and confirmed it booted, including Docker and containerd. PBS lived on the same cluster, so this tested backup and restore without giving me a separate failure domain.
 
-## Repository Structure
+![Test restore booting](screenshots/proxmox/pbs-restore-test-boot.png)
 
-- [networking](networking/) - Cisco switch recovery, console access, VLANs, and routing notes.
-- [windows-server](windows-server/) - Windows Server install, AD DS, DNS, DHCP, WDS, OU, and Group Policy notes.
-- [proxmox](proxmox/) - Proxmox cluster, Windows NFS shared storage, VM inventory, backup/DR, Ubuntu Server, and Docker notes.
-- [monitoring](monitoring/) - Prometheus, Grafana, Alertmanager, and exporter configs and setup notes.
-- [ansible](ansible/) - Playbooks and inventory for automating Proxmox and Docker host configuration.
-- [diagrams](diagrams/) - Pinout and architecture diagrams.
-- [photos](photos/) - Homelab setup and DIY console cable photos.
-- [screenshots](screenshots/) - Validation screenshots for networking, Windows Server, Proxmox, Linux, and Docker.
-- [hardware-inventory.md](hardware-inventory.md) - Physical equipment used in the lab.
-- [troubleshooting-log.md](troubleshooting-log.md) - Issues encountered and how they were resolved.
-- [lessons-learned.md](lessons-learned.md) - Practical takeaways from the build.
+[PBS setup, storage mistake, and restore test](proxmox/backup-and-disaster-recovery.md)
 
-## Portfolio Goal
+## Things that went wrong
 
-This homelab is designed to demonstrate job-ready infrastructure skills for systems administrator, infrastructure operations, network support, data center technician, and IT support roles.
+The useful part of this lab was figuring out why something didn't work: losing switch SSH after changing the uplink, a Docker repository key error, Group Policy reaching the computer but not the user, and a successful backup going to the wrong place.
+
+I kept those in the [troubleshooting log](troubleshooting-log.md), with the fixes and what I checked afterward. The shorter version is in [what I learned](lessons-learned.md).
+
+## Still to improve
+
+- Give PBS separate storage or an offsite copy.
+- Configure an actual Alertmanager notification receiver and test delivery.
+- Add Windows Server metrics and more Grafana dashboards.
+- Replace the Docker playbook's raw Compose command with a task that reports changes accurately.
+- Record the NFS export path and storage pool details.

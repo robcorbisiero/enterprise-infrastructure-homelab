@@ -1,31 +1,31 @@
 # Cisco 3750G Lab Configuration
 
-## Objective
+## What I was doing
 
-Use the recovered Cisco Catalyst 3750G as the core switching device for the homelab and practice management, VLAN, and basic Layer 3 switching tasks.
+Once the 3750G booted, I used it for the lab network and worked through management access, VLANs, and basic routing checks.
 
-## Lab Scenarios Completed
+## What I worked through
 
-### Scenario 1: Management Access
+### Management access
 
-Configured the switch for remote administration after console recovery.
+I configured the switch for remote administration after console recovery.
 
 Key tasks:
 
-- Confirmed IOS boot.
-- Entered privileged EXEC mode.
-- Prepared the switch for SSH-based management.
-- Validated that console access remained available during management changes.
+- I confirmed IOS boot.
+- I entered privileged EXEC mode.
+- I prepared the switch for SSH-based management.
+- I validated that console access remained available during management changes.
 
-Evidence:
+Screenshot:
 
 ![Cisco show version](../screenshots/networking/cisco-show-version.png)
 
 ![Cisco VTY SSH configuration](../screenshots/networking/cisco-vty-ssh-config.png)
 
-### Scenario 2: VLAN and Port Assignment
+### VLANs and ports
 
-Started segmenting the lab network into dedicated VLANs.
+I started segmenting the lab network into dedicated VLANs.
 
 Example VLAN plan:
 
@@ -42,22 +42,22 @@ Operational note:
 - Changing port 1 configuration caused SSH management to drop.
 - Access was restored by correcting the management path.
 
-Evidence:
+Screenshot:
 
 ![Cisco VLAN brief](../screenshots/networking/cisco-vlan-brief.png)
 
-### Scenario 3: Layer 3 Switching Preparation
+### Layer 3 preparation
 
-Used the Catalyst 3750G as a platform for learning Layer 3 switching concepts.
+I used the Catalyst 3750G as a platform for learning Layer 3 switching concepts.
 
 Key tasks:
 
-- Planned switched virtual interfaces (SVIs).
-- Reviewed the need for `ip routing` when routing between VLANs locally.
-- Tested connectivity between the switch and Windows Server.
-- Validated server reachability after correcting addressing and port configuration.
+- I planned switched virtual interfaces (SVIs).
+- I reviewed the need for `ip routing` when routing between VLANs locally.
+- I tested connectivity between the switch and Windows Server.
+- I validated server reachability after correcting addressing and port configuration.
 
-Evidence:
+Screenshot:
 
 ![Cisco IP interface brief](../screenshots/networking/cisco-ip-interface-brief.png)
 

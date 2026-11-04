@@ -1,8 +1,8 @@
 # Cisco Console Access
 
-## Objective
+## What I was doing
 
-Gain console access to a Cisco Catalyst switch without an official Cisco console cable, using available hardware and a temporary 3-wire serial connection.
+I didn't have a Cisco console cable, so I made a temporary three-wire serial connection from parts I had available. This got me into the 3750G bootloader through PuTTY.
 
 ## Equipment Used
 
@@ -32,12 +32,12 @@ Pinout diagram:
 
 ## Process
 
-1. Connected the StarTech USB-to-DB9 adapter to the Windows 11 laptop.
-2. Confirmed the adapter appeared in Device Manager under Ports (COM & LPT).
-3. Used PuTTY to open the detected COM port.
-4. Built a temporary serial connection using Dupont connector wires wrapped around the male DB9 pins.
-5. Connected the RJ45 end into the Cisco console port.
-6. Pressed Enter in PuTTY until the switch responded.
+1. I connected the StarTech USB-to-DB9 adapter to the Windows 11 laptop.
+2. I confirmed the adapter appeared in Device Manager under Ports (COM & LPT).
+3. I used PuTTY to open the detected COM port.
+4. I built a temporary serial connection using Dupont connector wires wrapped around the male DB9 pins.
+5. I connected the RJ45 end into the Cisco console port.
+6. I pressed Enter in PuTTY until the switch responded.
 
 ## Important Notes
 
@@ -54,6 +54,6 @@ Pinout diagram:
 | 3 | TX | 6 | Green |
 | 5 | Ground | 4 and 5 | Blue and white/blue |
 
-## Result
+## How it turned out
 
 PuTTY successfully connected to the Cisco switch and displayed the `switch:` bootloader prompt.

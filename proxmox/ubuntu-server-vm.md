@@ -1,10 +1,10 @@
 # Ubuntu Server VM
 
-## Objective
+## What I was doing
 
-Deploy an Ubuntu Server VM inside Proxmox and configure it as a secure Linux administration and container host.
+I created `ubuntu-srv-01` in Proxmox to practice Linux administration and run Docker. I fixed its network access first, then set up SSH keys.
 
-Evidence:
+Screenshot:
 
 ![Ubuntu VM summary in Proxmox](../screenshots/proxmox/ubuntu-vm-summary.png)
 
@@ -69,13 +69,13 @@ sudo systemctl status ssh
 
 ## Validation
 
-- Confirmed passwordless login worked.
-- Opened a second SSH session before closing the first session.
-- Confirmed the SSH service was active.
-- Confirmed standard password login was disabled after key-based access was working.
+- I confirmed passwordless login worked.
+- I opened a second SSH session before closing the first session.
+- I confirmed the SSH service was active.
+- I confirmed standard password login was disabled after key-based access was working.
 
 ![SSH service status](../screenshots/linux/ubuntu-ssh-service-status.png)
 
-## Result
+## How it turned out
 
-The Ubuntu Server VM became a hardened Linux administration target suitable for Docker and future service hosting.
+With key login working and password/root SSH login disabled, I moved on to the [Docker setup](docker-host.md).

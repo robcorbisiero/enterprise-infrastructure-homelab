@@ -1,18 +1,18 @@
 # Windows NFS Shared Storage
 
-## Objective
+## What I was doing
 
-Provide shared storage to the Proxmox cluster using a Windows Server NFS export backed by pooled SSD storage.
+I pooled three SSDs on the Windows Server host and exported the storage over NFS so all three Proxmox nodes could use it.
 
-## Current State
+## Setup used in this build
 
 - Ceph was disabled for the current lab design.
 - Three SSDs are pooled on the Windows Server storage host.
 - The pooled storage is exported through Windows NFS.
 - The Proxmox nodes mount the shared storage as `Windows-NFS`.
-- The Proxmox cluster remains active with three online nodes.
+- The cluster screenshot below records all three nodes online during the build.
 
-Evidence:
+Screenshot:
 
 ![Proxmox cluster summary showing Windows-NFS storage](../screenshots/proxmox/cluster-summary.png)
 
@@ -20,13 +20,7 @@ Evidence:
 
 This layout fits the current hardware better than Ceph because the SSDs are attached to the Windows Server system instead of being distributed across the Proxmox nodes as dedicated Ceph OSD disks.
 
-The design still demonstrates practical infrastructure skills:
-
-- Windows storage pooling
-- NFS export configuration
-- Proxmox shared storage integration
-- Centralized storage for clustered virtualization
-- Storage design tradeoff analysis
+This gave all three nodes access to the same storage. It also meant the Windows host and its SSD pool were a shared dependency for VMs with disks on NFS.
 
 ## Architecture
 
@@ -44,4 +38,4 @@ Proxmox storage target: Windows-NFS
 
 ## Notes
 
-Ceph is still valuable to learn later, but Windows NFS is the accurate storage design for the current state of this homelab.
+I did not use Ceph for this build. The exact Windows export path and pool layout still need to be added to these notes.

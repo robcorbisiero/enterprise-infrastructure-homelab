@@ -1,40 +1,31 @@
-# Lessons Learned
+# What I learned
 
-## Hardware and Physical Access
+## Keep a way back in
 
-- A missing official console cable does not stop recovery work if the serial pinout is understood and tested carefully.
-- DB9 serial, USB, and RJ45 console wiring are not interchangeable; the signals and pinouts matter.
-- Dupont connector wires can be useful for temporary lab access, but a proper console cable is the right long-term tool.
-- Older hardware can be very useful for learning, but driver support often decides which operating system version is realistic.
+I lost SSH to the Cisco switch while changing the port I was using for management. Having the console connection available let me recover without starting over. I now check how I'm connected before changing ports or VLANs.
 
-## Cisco Switching
+The homemade cable got me through the recovery, but it was temporary. Understanding the DB9/RJ45 pinout mattered more than having the right-looking connector.
 
-- The `switch:` prompt means the switch is in bootloader mode and IOS has not fully loaded.
-- `flash_init`, `dir flash:`, `unset BOOT`, and manual `boot flash:/...` commands are important recovery tools.
-- Management access can be lost quickly when changing uplink ports, VLAN assignments, or gateway assumptions.
-- Keeping console access available while changing switch management settings prevents unnecessary lockouts.
+## Let the hardware decide some of the design
 
-## Windows Server
+The older Wi-Fi card wouldn't cooperate with Server 2025. Server 2016 worked, which let me get on with the lab. That was a hardware compatibility decision, not a recommendation for a new deployment.
 
-- Windows Server 2025 created driver friction with older wireless hardware.
-- Windows Server 2016 was a better fit for the older Wi-Fi adapter and allowed the lab to continue.
-- AD DS, DNS, DHCP, and WDS create a strong portfolio story because they show centralized identity, name resolution, addressing, and deployment.
-- When a server has Wi-Fi for internet and Ethernet for the lab switch, routing and default gateway choices must be deliberate.
+I also went with Windows NFS instead of Ceph because the SSDs were attached to the Windows box, not spread across the Proxmox nodes. Shared storage worked for this setup, but it also made that Windows host a dependency for the VMs using it.
 
-## Proxmox and Virtualization
+## Check the result, not just the green status
 
-- A three-node Proxmox cluster is a realistic way to learn enterprise virtualization concepts on small hardware.
-- Shared storage design should match the hardware. Windows NFS was a better current fit than Ceph because the SSDs are pooled on the Windows Server storage host.
-- Static addressing and consistent host naming are important before adding nodes to a cluster.
+My backup job said `OK` while PBS had no snapshots. The job had written to local storage. Checking the destination and restoring into VM `999` caught the difference between a completed job and a backup I could use.
 
-## Linux Administration
+The same thing happened with Group Policy: the computer showed the GPO, but the user settings weren't applying. `gpresult /r` made that visible. Loopback processing in Merge mode got the drive map and screensaver settings onto `PC01`.
 
-- On Ubuntu/Debian systems, the SSH service is commonly managed as `ssh`, not `sshd`.
-- SSH key authentication should be tested in a second session before closing the original session.
-- Disabling password authentication is a meaningful hardening step after key-based login is confirmed.
-- Docker installation failures often come from repository files, GPG key placement, or package source trust problems.
+## Test access before changing it
 
-## Documentation
+I checked SSH key login in a second session before disabling password login. On Ubuntu I also learned to use `systemctl restart ssh`; trying `sshd` gave me a service-not-found error.
 
-- Troubleshooting steps are valuable portfolio material when they show the symptom, root cause, fix, and validation.
-- Recruiters and hiring managers do not need a raw transcript; they need clear summaries of what was built and what skills were demonstrated.
+## Do it by hand, then automate it
+
+Installing node_exporter three times made the Ansible use case pretty obvious. The second playbook run reported no changes on all three nodes. The Docker playbook needs more work: its raw Compose command reports a change even when there's nothing to recreate.
+
+## Leave notes I can use again
+
+The commands, screenshots, and mistakes are the parts I'll want when I rebuild something. A list of tools doesn't tell me why the Docker install failed or which storage target I picked by mistake, so I kept those details here.

@@ -1,72 +1,38 @@
 # Active Directory, DNS, and DHCP
 
-## Objective
-
-Configure Windows Server 2016 as the central identity, DNS, and DHCP server for the homelab.
-
-## Domain
+I used the Windows Server 2016 desktop as the domain controller, DNS server, and DHCP server for the lab.
 
 | Item | Value |
 | --- | --- |
-| Domain | `corbitpros.com` |
-| AD DNS name shown in consoles | `lab.corbitpros.com` |
-| Server role | Domain controller / infrastructure server |
+| AD DNS domain | `lab.corbitpros.com` |
+| Domain controller | `LAB-DC-01.lab.corbitpros.com` |
+| Lab-side server IP | `10.10.10.2` |
 | Lab network | `10.10.10.0/24` |
 
 ## Active Directory
 
-Active Directory Domain Services was selected to provide centralized identity management and a realistic enterprise administration layer.
-
-Portfolio talking points:
-
-- Installed AD DS role.
-- Promoted Windows Server to a domain controller.
-- Established a named lab domain.
-- Prepared the environment for domain-joined clients and servers.
-
-Evidence:
+I installed AD DS and promoted the server to a domain controller. The AD console below shows the lab domain. Older notes used the shorter `corbitpros.com` name; the actual AD namespace shown in the screenshots is `lab.corbitpros.com`.
 
 ![Active Directory domain controllers](../screenshots/windows-server/active-directory-domain-controllers.png)
 
+I later joined the WDS-imaged client to this domain and moved it into a `Workstations` OU. Those commands and the Group Policy tests are in the [Group Policy notes](group-policy.md).
+
 ## DNS
 
-DNS was configured as part of the domain controller build so lab clients and servers can resolve domain resources.
-
-Key purpose:
-
-- Resolve `corbitpros.com` domain resources.
-- Support AD DS service discovery.
-- Provide consistent name resolution for lab infrastructure.
-
-Evidence:
+I configured DNS with the domain controller so clients could resolve the lab's names and find AD services.
 
 ![DNS forward lookup zones](../screenshots/windows-server/dns-forward-lookup-zones.png)
 
 ## DHCP
 
-DHCP was configured to provide addressing for lab-connected systems.
-
-Troubleshooting note:
-
-- DHCP did not initially appear as expected.
-- The server was checked in the authorized DHCP servers list.
-- It was already authorized, and the DHCP console began showing it correctly afterward.
-
-Evidence:
+DHCP didn't show up the way I expected at first. I checked the authorized servers list and found the server was already authorized. After rechecking the role and console, it appeared correctly. I didn't pin down a separate authorization fault.
 
 ![DHCP active scope](../screenshots/windows-server/dhcp-active-scope.png)
 
-## Validation
+The later [PXE boot screenshot](windows-deployment-services.md#pxe-boot-and-client-imaging) shows the client receiving `10.10.10.100` from DHCP server `10.10.10.2`.
 
-Validation steps used during the lab:
+## Checks I made
 
-- Checked DHCP authorization.
-- Confirmed server visibility in management consoles.
-- Verified switch-to-server connectivity.
-- Confirmed lab clients could be prepared for addressing and deployment work.
-
-## Result
-
-The Windows Server host now acts as the foundation for centralized infrastructure services in the homelab.
+I checked DHCP authorization, server visibility in the management consoles, and connectivity between the switch and server. The WDS deployment and domain-joined client gave me a practical way to test the services together.
 
 ![Server Manager dashboard](../screenshots/windows-server/server-manager-dashboard.png)

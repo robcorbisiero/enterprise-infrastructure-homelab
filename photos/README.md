@@ -1,6 +1,6 @@
 # Homelab Photos
 
-This folder contains physical documentation of the homelab build, including the hardware setup and the temporary DIY console cable used during Cisco switch recovery.
+Photos of my lab setup and the temporary cable I made to recover the Cisco switch.
 
 ## Preview
 
@@ -20,6 +20,4 @@ This folder contains physical documentation of the homelab build, including the 
 
 ## Notes
 
-- Photos are stored as JPEG files so they render directly in GitHub Markdown.
-- These images document the physical side of the build, not just the logical configuration.
-- The DIY console connection was used as a temporary recovery method before the switch was reusable through normal management paths.
+The DIY cable was a temporary recovery fix. The [console notes](../networking/switch-console-access.md) include the pinout and PuTTY settings.

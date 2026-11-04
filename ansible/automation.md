@@ -1,12 +1,12 @@
 # Configuration Automation with Ansible
 
-## Objective
+## What I was doing
 
-Replace repetitive manual setup steps with idempotent, repeatable Ansible playbooks — starting with the `node_exporter` install that was previously done by hand, one SSH session at a time, across all three Proxmox nodes in [Monitoring and Alerting](../monitoring/monitoring-stack.md).
+I had already installed node_exporter by hand on three Proxmox nodes. I used Ansible to repeat that setup and then added a playbook for the Docker host. The original steps are in the [monitoring notes](../monitoring/monitoring-stack.md).
 
-## Why This, and Why Now
+## Why I automated it
 
-Phase 6 involved SSHing into `pve-01`, `pve-02`, and `pve-03` individually and running the same `useradd` / `wget` / systemd unit steps three times by hand. That's exactly the kind of repetitive, error-prone toil configuration management tools exist to remove. Automating it here demonstrates the "did it manually once, then automated it" progression real infrastructure work follows.
+I was opening an SSH session to each node and repeating the same user, download, and systemd steps. Once I had it working manually, I wanted one playbook I could run across all three.
 
 ## Control Node
 
@@ -49,7 +49,7 @@ ssh-copy-id root@10.10.10.13
 
 ## Playbook: `node_exporter.yml`
 
-[`playbooks/node_exporter.yml`](playbooks/node_exporter.yml) reproduces the manual install from Phase 6, but idempotently — re-running it is a no-op once `node_exporter` is already installed and running, thanks to the `stat` check before downloading/installing:
+[`playbooks/node_exporter.yml`](playbooks/node_exporter.yml) reproduces the manual install from the monitoring setup, but idempotently — re-running it is a no-op once `node_exporter` is already installed and running, thanks to the `stat` check before downloading/installing:
 
 ```bash
 cd ansible
@@ -78,15 +78,8 @@ ansible-playbook playbooks/docker_host.yml --ask-become-pass
 
 ## Validation
 
-Both playbooks were run against the live environment. `node_exporter.yml` was also re-run a second time immediately after the first to confirm idempotency:
+I ran both playbooks against the lab, then ran `node_exporter.yml` again to check whether it made any more changes:
 
 ![Ansible node_exporter playbook idempotent re-run](../screenshots/monitoring/ansible-node-exporter-idempotent.png)
 
-The `PLAY RECAP` shows `changed=0` across all three nodes on the second run, with the download/extract/install tasks all reporting `skipping` since `node_exporter` was already present — confirming the playbook is safe to re-run without re-downloading or restarting the service unnecessarily. Prometheus's **Status → Targets** page continued to show all `proxmox-nodes` targets `UP` throughout.
-
-## Skills Demonstrated
-
-- Ansible control node setup and SSH key trust distribution
-- Idempotent playbook design (check-before-install patterns)
-- Reproducing prior manual sysadmin work as configuration-as-code
-- Ansible inventory groups, `ansible_connection=local`, and privilege escalation (`become`)
+The `PLAY RECAP` shows `changed=0` across all three nodes on the second run, with the download/extract/install tasks all reporting `skipping` since `node_exporter` was already present — showing that this second run did not download or restart anything. This checks the installed state I tested; it does not prove every upgrade or recovery case. Prometheus's **Status → Targets** page continued to show all `proxmox-nodes` targets `UP` throughout.

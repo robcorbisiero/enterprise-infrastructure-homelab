@@ -1,14 +1,14 @@
 # Windows Deployment Services
 
-## Objective
+## What I was doing
 
-Prepare Windows Deployment Services (WDS) so the lab can image multiple mini PCs from a centralized Windows Server instead of installing each machine manually.
+I set up WDS on the Windows Server desktop and used it to install Windows 10 on a spare mini PC over the network.
 
 ## Reason for WDS
 
-The lab includes multiple mini PCs. WDS turns repeated manual installs into a repeatable deployment workflow and demonstrates practical endpoint provisioning skills.
+I had several mini PCs to work with and wanted to try network imaging instead of installing each one from USB.
 
-## Planned Workflow
+## Setup sequence
 
 1. Install the WDS role on Windows Server 2016.
 2. Configure WDS for integrated Active Directory operation.
@@ -18,7 +18,7 @@ The lab includes multiple mini PCs. WDS turns repeated manual installs into a re
 6. PXE boot mini PCs from the lab network.
 7. Deploy Windows images over the network.
 
-## Current Status
+## Where I got to
 
 - WDS role was installed and configured.
 - Server `LAB-DC-01.lab.corbitpros.com` appears in WDS as configured.
@@ -27,7 +27,7 @@ The lab includes multiple mini PCs. WDS turns repeated manual installs into a re
 - A spare mini PC was PXE-booted against WDS and imaged end to end.
 - The imaged client auto-joined the `lab.corbitpros.com` domain during the unattended install.
 
-Evidence:
+Screenshot:
 
 ![Windows Deployment Services configured](../screenshots/windows-server/wds-configured.png)
 
@@ -75,7 +75,7 @@ The unattended install joined the machine to the domain automatically, without a
 
 ## Post-Imaging Cleanup
 
-The client's default computer name didn't match the naming convention used for the lab, so it was renamed to `PC01` after imaging. Renaming a domain-joined machine leaves the DNS record pointing at the old name until it's refreshed, which blocked it from being found cleanly for the OU move described in [Organizational Units and Group Policy](group-policy.md).
+I renamed the client to `PC01` after imaging. During cleanup I had trouble finding it under the new name and refreshed its DNS registration before doing the [OU move](group-policy.md).
 
 Resolved by running, on the client, after the rename and reboot:
 
@@ -84,18 +84,8 @@ ipconfig /flushdns
 ipconfig /registerdns
 ```
 
-This cleared the stale local resolver cache and forced the client to re-register its `A` record in DNS under its new name, after which the computer object was visible and correctly named for the `Move-ADObject` step into the `Workstations` OU.
+After the rename, reboot, and DNS refresh, I found the `PC01` computer object and moved it into `Workstations`. These commands refresh DNS; they do not rename an AD computer object. I did not isolate DNS as the cause of the AD lookup problem.
 
 ![Confirmed rename and domain membership](../screenshots/windows-server/PC-joined-domain.jpg)
 
 `System Properties` confirms the final state: full computer name `PC01.lab.corbitpros.com`, domain `lab.corbitpros.com`.
-
-## Skills Demonstrated
-
-- Enterprise imaging concepts
-- PXE deployment planning and execution
-- Unattended install with automatic domain join
-- Centralized endpoint provisioning
-- DNS record troubleshooting after a computer rename
-- Windows Server role planning
-- Repeatable infrastructure documentation

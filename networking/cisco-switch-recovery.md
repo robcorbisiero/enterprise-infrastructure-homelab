@@ -1,8 +1,8 @@
 # Cisco Catalyst Switch Recovery
 
-## Objective
+## What I was doing
 
-Recover a Cisco Catalyst 3750G switch that was stuck at the `switch:` bootloader prompt and return it to a usable IOS state for homelab switching exercises.
+My Cisco 3750G stopped at the `switch:` prompt instead of loading IOS. I used the temporary console cable to inspect flash and get it booting again.
 
 ## Initial State
 
@@ -32,17 +32,6 @@ switch: boot flash:/c3750-ipbasek9-mz.122-55.SE4/c3750-ipbasek9-mz.122-55.SE4.bi
 - Clearing the BOOT variable removed the stale or broken boot path.
 - Manually booting with the full image path allowed the switch to continue.
 
-## Result
+## How it turned out
 
 The switch booted successfully into Cisco IOS. The hostname returned to the default `Switch`, and privileged EXEC mode was accessible without an existing password.
-
-## Portfolio Value
-
-This recovery demonstrated:
-
-- Serial console access
-- Cisco bootloader navigation
-- Flash file inspection
-- BOOT variable troubleshooting
-- Manual IOS boot recovery
-- Hardware reuse instead of e-waste

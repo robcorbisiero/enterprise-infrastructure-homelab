@@ -1,8 +1,8 @@
 # Windows Server 2016 Installation
 
-## Objective
+## What I was doing
 
-Install a Windows Server operating system on a refurbished desktop build to provide core infrastructure services for the homelab.
+I used my i5 desktop as the Windows Server host. The first challenge was getting the older Wi-Fi card working so the lab had upstream internet access.
 
 ## Hardware
 
@@ -25,23 +25,23 @@ The Windows Server host was configured with two different network paths:
 - Wi-Fi: upstream internet/home network access
 - Ethernet: lab switch connection
 
-This created a realistic routing and gateway troubleshooting scenario because the lab-facing Ethernet interface and internet-facing Wi-Fi interface needed to be handled carefully.
+I had to check the routes and gateway settings carefully with those two interfaces. Getting the switch to ping the server did not, by itself, mean the lab had internet access.
 
 ## Post-Install Tasks
 
-- Installed Windows updates.
-- Confirmed Wi-Fi driver functionality.
-- Connected Ethernet to the Cisco switch.
-- Prepared the server for infrastructure roles.
-- Verified switch-to-server connectivity using ping.
+- I installed Windows updates.
+- I confirmed Wi-Fi driver functionality.
+- I connected Ethernet to the Cisco switch.
+- I prepared the server for infrastructure roles.
+- I verified switch-to-server connectivity using ping.
 
-## Roles Planned/Installed
+## Roles I installed
 
 - Active Directory Domain Services
 - DNS Server
 - DHCP Server
 - Windows Deployment Services
 
-## Result
+## How it turned out
 
 Windows Server 2016 became the central infrastructure server for the lab and provided the foundation for identity, name resolution, addressing, and imaging services.

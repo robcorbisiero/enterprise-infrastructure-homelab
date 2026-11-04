@@ -1,8 +1,8 @@
 # Organizational Units and Group Policy
 
-## Objective
+## What I was doing
 
-Introduce OU-based structure and Group Policy management for the `lab.corbitpros.com` domain, starting with a domain-joined Windows 10 client imaged through WDS.
+I used the Windows 10 client I imaged through WDS to test OUs and Group Policy in `lab.corbitpros.com`. I wanted a mapped drive and a screensaver lock to apply on `PC01`.
 
 ## Client Provisioning
 
@@ -16,7 +16,7 @@ lab.corbitpros.com
 └── Servers
 ```
 
-- `Workstations` holds domain-joined client machines (e.g. `PC01`), so workstation-scoped GPOs (password policy, drive mapping, hardening) have a clean link target.
+- `Workstations` holds domain-joined client machines (e.g. `PC01`), so workstation-scoped settings (drive mapping and screensaver lock) have a clean link target.
 - `Servers` is created for future member servers. Domain Controllers are intentionally left in their default `Domain Controllers` OU rather than moved.
 
 The default `Computers` container is not an OU, so anything left there cannot receive OU-linked Group Policy — this is why new computer objects need to be relocated after joining.
@@ -49,7 +49,7 @@ Verify the move:
 Get-ADComputer -Identity "PC01" | Select-Object Name, DistinguishedName
 ```
 
-## Evidence
+## Screenshots
 
 ![Active Directory Users and Computers OU structure](../screenshots/windows-server/ad-ou-structure.png)
 
@@ -57,7 +57,7 @@ Get-ADComputer -Identity "PC01" | Select-Object Name, DistinguishedName
 
 ## Domain-Wide Account Policies
 
-Windows only honors Account Policies (password policy, account lockout policy) from a GPO linked at the **domain root** — a GPO linked to an OU only affects the local SAM accounts on machines in that OU, not domain logons. This is a common point of confusion, so rather than scoping these to `Workstations`, they were configured directly on **Default Domain Policy**.
+I configured the default domain password and lockout settings in **Default Domain Policy**, linked at the domain root. The OU-linked policy below handles the workstation settings. The values here record my lab exercise.
 
 Password Policy:
 
@@ -99,7 +99,7 @@ New-SmbShare -Name "LabShare" -Path "C:\LabShare" -FullAccess "Everyone"
 icacls "C:\LabShare" /grant "Authenticated Users:(OI)(CI)M"
 ```
 
-Share permissions are left open (`Everyone: Full Control`) with the actual restriction enforced at the NTFS layer (`Authenticated Users: Modify`) — the standard share/NTFS permission split.
+For this lab share I used `Everyone: Full Control` at the share layer and `Authenticated Users: Modify` at the NTFS layer. That let me test the mapping; access was broad across authenticated users. For a real departmental share I would scope permissions to the relevant groups.
 
 `Workstations Policy` → `User Configuration → Preferences → Windows Settings → Drive Maps` maps `Z:` to `\\LAB-DC-01\LabShare`:
 
@@ -152,6 +152,6 @@ The `Z:` drive mapping appeared correctly under Network locations on `PC01`:
 
 The screensaver/lock policy was also confirmed: after the configured timeout with no input, `PC01` triggered the screensaver and required the account password to unlock, matching the `Password protect the screen saver` setting.
 
-## Result
+## How it turned out
 
-`Workstations Policy` is fully validated end to end: linked to the correct OU, applying to both computer and user settings after the loopback processing fix, with the drive mapping and screensaver lock both confirmed working on `PC01`.
+After enabling loopback processing, I checked that `Workstations Policy` appeared for both the computer and user. The mapped drive showed up on `PC01`, and the screensaver required a password to unlock.

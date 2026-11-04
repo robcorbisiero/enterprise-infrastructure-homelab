@@ -1,8 +1,8 @@
 # Monitoring and Alerting Stack
 
-## Objective
+## What I was doing
 
-Add centralized monitoring and alerting for the lab: the Ubuntu Docker host, its containers, and the three Proxmox VE nodes, using Prometheus, Grafana, node_exporter, cAdvisor, and Alertmanager.
+I wanted to see the Docker VM, its containers, and the three Proxmox hosts in one place. I used Prometheus for metrics, Grafana for dashboards, and Alertmanager for alert routing.
 
 ## Architecture
 
@@ -76,7 +76,7 @@ curl localhost:9100/metrics | head
 
 If the Proxmox firewall (`pve-firewall`) is enabled on any node, add a rule allowing TCP/9100 from the Docker host (`10.10.10.103`) — otherwise Prometheus scrapes will time out even though the service is running locally.
 
-## Access Points (once deployed)
+## Lab addresses
 
 ```text
 Prometheus:   http://10.10.10.103:9090
@@ -84,17 +84,17 @@ Alertmanager: http://10.10.10.103:9093
 Grafana:      http://10.10.10.103:3000
 ```
 
-## Validation Steps
+## Checks
 
 - Prometheus **Status > Targets** shows all targets (`docker-host`, `docker-containers`, and all three `proxmox-nodes`) as `UP`.
 - Grafana loads with the Prometheus datasource already configured (no manual setup).
-- Triggering a test condition (e.g. stopping a Proxmox node's `node_exporter` service) produces a firing alert in Prometheus **Alerts** and a corresponding notification in Alertmanager.
+- To test alert evaluation, stop an exporter and check Prometheus **Alerts** and Alertmanager. The checked-in receiver is a placeholder, so external notification delivery is still unfinished.
 
 ![Prometheus targets all up](../screenshots/monitoring/prometheus-targets-all-up.png)
 
-All five scrape targets (`docker-host`, `docker-containers`, `prometheus`, and 3/3 `proxmox-nodes`) reporting `UP`, confirming node_exporter is reachable on the Docker host and all three Proxmox cluster nodes.
+The screenshot shows all six scrape targets `UP`: the Docker host, cAdvisor, Prometheus itself, and three Proxmox nodes. This records reachability during the test; it is not a live uptime report.
 
-## Planned Enhancements
+## Next things to add
 
 - Import or build Grafana dashboards for host and container metrics.
 - Configure a real Alertmanager receiver (email or webhook) in place of the placeholder.

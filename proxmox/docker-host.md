@@ -1,18 +1,18 @@
 # Docker Host Setup
 
-## Objective
+## What I was doing
 
-Install Docker Engine and Docker Compose on the Ubuntu Server VM so the homelab can host containerized services.
+I installed Docker Engine and Compose on the Ubuntu VM, then used Portainer to manage containers.
 
 Final validation:
 
 ![Portainer container running](../screenshots/docker/portainer-container-running.png)
 
-## Intended Install Path
+## Packages I used
 
 The target was the official Docker repository rather than the older packages bundled in Ubuntu's default repositories.
 
-Planned packages:
+Packages:
 
 ```bash
 docker-ce
@@ -48,11 +48,11 @@ This meant APT could see the Docker repository, but could not verify it because 
 
 ## Troubleshooting Performed
 
-- Found and corrected a typo from `sources.list.y` to `sources.list.d`.
-- Recreated the Docker repository list file.
-- Attempted to place Docker's key under `/etc/apt/keyrings/docker.gpg`.
-- Identified that the key file was not present when `chmod` was attempted.
-- Switched the plan toward using a readable `.asc` key path.
+- I found and corrected a typo from `sources.list.y` to `sources.list.d`.
+- I recreated the Docker repository list file.
+- I attempted to place Docker's key under `/etc/apt/keyrings/docker.gpg`.
+- I identified that the key file was not present when `chmod` was attempted.
+- I switched the plan toward using a readable `.asc` key path.
 
 ## Installation Validation Steps
 
@@ -72,7 +72,7 @@ sudo usermod -aG docker $USER
 docker run hello-world
 ```
 
-## Current Status
+## Where I got to
 
 Docker installation was completed successfully. Portainer Community Edition was deployed as a running container and is reachable at:
 
@@ -87,4 +87,4 @@ Published ports shown in Portainer:
 9443:9443
 ```
 
-The important learning outcomes were Docker repository trust troubleshooting, container runtime installation, and web-based container management through Portainer.
+The install took a few attempts because of the repository path and missing key. Once those were fixed, Docker and Portainer were running.

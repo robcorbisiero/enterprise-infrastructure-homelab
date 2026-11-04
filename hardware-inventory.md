@@ -13,7 +13,7 @@
 | Device | Role | Notes |
 | --- | --- | --- |
 | Custom desktop build | Windows Server host | Intel i5-4670K, 16 GB DDR3 RAM, 256 GB SSD. Used for Windows Server infrastructure roles. |
-| Mini PCs | Proxmox cluster nodes | Three nodes (Intel i3-6100T, 8 GB RAM, 64 GB NVMe each) currently clustered in Proxmox. Additional mini PCs are available for imaging and expansion. |
+| Mini PCs | Proxmox cluster nodes | Three nodes (Intel i3-6100T, 8 GB RAM, 64 GB NVMe each) used as the Proxmox cluster. Additional mini PCs are available for imaging and expansion. |
 | Dell OptiPlex systems | Refurbished lab clients/hosts | Used for hardware practice and potential client imaging. |
 | Lenovo ThinkCentre systems | Refurbished lab clients/hosts | Used for hardware practice and potential client imaging. |
 
@@ -27,10 +27,10 @@
 | Older Wi-Fi card from Gateway DX4860 | Tested in the Windows Server host; worked after downgrading to Windows Server 2016. |
 | SSDs, RAM, GPUs, NICs, power supplies | Refurbishment, testing, and lab expansion parts. |
 
-## Current Lab Notes
+## Build notes
 
 - The Windows Server host uses Wi-Fi for upstream internet and Ethernet for the lab switch connection.
-- Three mini PCs are currently connected and clustered in Proxmox.
+- I connected three mini PCs and joined them into a Proxmox cluster.
 - Three SSDs are pooled on the Windows Server storage host and exported to Proxmox through Windows NFS.
-- Additional mini PCs can be imaged through WDS once ISO/install images are added.
+- I used WDS to image a spare mini PC and join it to the domain; see the [deployment walkthrough](windows-server/windows-deployment-services.md).
 - Physical photos of the setup and temporary console cable are stored in [photos](photos/).
