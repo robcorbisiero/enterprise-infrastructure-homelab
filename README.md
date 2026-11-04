@@ -179,4 +179,4 @@ Documentation:
 
 ## Portfolio Goal
 
-This homelab is designed to demonstrate job-ready infrastructure skills for help desk, junior systems administrator, network support, data center technician, and infrastructure operations roles.
+This homelab is designed to demonstrate job-ready infrastructure skills for systems administrator, infrastructure operations, network support, data center technician, and IT support roles.
