@@ -31,8 +31,13 @@ On the Ubuntu Docker host:
 
 ```bash
 cd monitoring
+cp .env.example .env
+nano .env  # set GRAFANA_ADMIN_PASSWORD
+chmod 600 .env
 docker compose up -d
 ```
+
+The `.env` file is ignored by Git. Compose requires a nonempty Grafana password for initial setup. For an existing Grafana database, change the account password in Grafana; editing `.env` does not reset it. See [Grafana's admin password setting](https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#admin_password).
 
 On each Proxmox node (`pve-01`, `pve-02`, `pve-03`):
 

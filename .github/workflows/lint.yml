@@ -1,0 +1,47 @@
+---
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: yamllint + ansible-lint + compose validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install linters
+        run: pip install yamllint ansible-lint
+
+      - name: Install Ansible collections
+        run: ansible-galaxy collection install -r requirements.yml
+        working-directory: ansible
+
+      - name: yamllint
+        run: yamllint .
+
+      - name: ansible-lint
+        run: ansible-lint
+        working-directory: ansible
+
+      - name: Validate the monitoring compose file
+        run: docker compose config --quiet
+        working-directory: monitoring
+        env:
+          GRAFANA_ADMIN_PASSWORD: ci-placeholder
+
+      - name: Verify Compose rejects an unset Grafana password
+        working-directory: monitoring
+        run: |
+          if env -u GRAFANA_ADMIN_PASSWORD docker compose config --quiet; then
+            echo "Compose unexpectedly accepted an unset Grafana password"
+            exit 1
+          fi

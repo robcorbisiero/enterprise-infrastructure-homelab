@@ -1,85 +1,75 @@
-# Configuration Automation with Ansible
+# Automating the lab with Ansible
 
-## What I was doing
+I started by installing node_exporter manually on all three Proxmox nodes. These playbooks let me repeat that setup and configure the Ubuntu Docker host from the same repo.
 
-I had already installed node_exporter by hand on three Proxmox nodes. I used Ansible to repeat that setup and then added a playbook for the Docker host. The original steps are in the [monitoring notes](../monitoring/monitoring-stack.md).
+## Where to run it
 
-## Why I automated it
-
-I was opening an SSH session to each node and repeating the same user, download, and systemd steps. Once I had it working manually, I wanted one playbook I could run across all three.
-
-## Control Node
-
-The existing Ubuntu Docker host (`10.10.10.103`) serves as the Ansible control node — it's already on the lab network with working SSH, and Ansible itself is agentless (no persistent service to run), so nothing new needed to be deployed for this.
+The control node is `ubuntu-srv-01` (`10.10.10.103`). Run from a checkout of this repo on that VM. The Docker inventory entry uses `ansible_connection=local`; the Proxmox nodes use SSH as root.
 
 ```bash
 sudo apt update
 sudo apt install -y ansible
+cd ansible
+ansible-galaxy collection install -r requirements.yml
 ```
 
-## Inventory
-
-[`inventory/hosts.ini`](inventory/hosts.ini):
-
-```ini
-[proxmox]
-pve-01 ansible_host=10.10.10.11
-pve-02 ansible_host=10.10.10.12
-pve-03 ansible_host=10.10.10.13
-
-[proxmox:vars]
-ansible_user=root
-
-[docker_hosts]
-ubuntu-srv-01 ansible_connection=local
-```
-
-`ubuntu-srv-01` uses `ansible_connection=local` since it's the same machine the control node runs on — no SSH loopback needed, just local privilege escalation via `become`.
-
-## SSH Trust to the Proxmox Nodes
-
-The control node needs a key trusted by root on each Proxmox node:
+The addresses are in [inventory/hosts.ini](inventory/hosts.ini). I used an SSH key on the control node and copied its public key to the three Proxmox hosts:
 
 ```bash
-ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
+ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519
 ssh-copy-id root@10.10.10.11
 ssh-copy-id root@10.10.10.12
 ssh-copy-id root@10.10.10.13
 ```
 
-## Playbook: `node_exporter.yml`
+If a key already exists, use that rather than overwriting it.
 
-[`playbooks/node_exporter.yml`](playbooks/node_exporter.yml) reproduces the manual install from the monitoring setup, but idempotently — re-running it is a no-op once `node_exporter` is already installed and running, thanks to the `stat` check before downloading/installing:
+## Proxmox node_exporter
+
+[node_exporter.yml](playbooks/node_exporter.yml) creates the service user, downloads the pinned amd64 release, checks its SHA-256 checksum, installs the binary and systemd unit, and starts the service.
 
 ```bash
-cd ansible
 ansible-playbook playbooks/node_exporter.yml
 ```
 
-Unlike the original manual process, the version is pinned (`1.8.2`) as a playbook variable rather than resolved dynamically at install time — intentional, so a re-run of this playbook always produces the same result instead of picking up whatever the latest GitHub release happens to be on a given day.
+The earlier playbook only checked whether the binary existed. That skipped installation even when I changed the version pin. It now checks the reported version and restarts the service when the binary changes. When changing the release, update both `node_exporter_version` and `node_exporter_checksum` using the release's published checksum list.
 
-## Playbook: `docker_host.yml`
+## Ubuntu Docker host
 
-[`playbooks/docker_host.yml`](playbooks/docker_host.yml) reproduces the Docker install from [Docker Host Setup](../proxmox/docker-host.md) and then brings up the monitoring stack from the cloned repo:
+Before running [docker_host.yml](playbooks/docker_host.yml), create the local monitoring environment file and choose a Grafana password:
 
 ```bash
+# From the repository root
+cp monitoring/.env.example monitoring/.env
+nano monitoring/.env
+chmod 600 monitoring/.env
 cd ansible
 ansible-playbook playbooks/docker_host.yml --ask-become-pass
 ```
 
-(`--ask-become-pass` because this one runs locally against `ubuntu-srv-01` and needs a `sudo` password rather than SSH key auth.)
+The playbook uses the checkout it runs from. It installs Docker's official packages and starts the monitoring stack with `community.docker.docker_compose_v2`. The collection is pinned in [requirements.yml](requirements.yml). Compose must be version 2.18 or newer.
 
-![Ansible docker_host playbook run](../screenshots/monitoring/ansible-docker-host-run.png)
+Two fixes came out of reviewing the original playbook:
 
-`ok=8, changed=2, failed=0`. The two `changed` tasks are worth explaining rather than glossing over:
+- Docker's APT source now uses `dpkg --print-architecture`. The old `ansible_architecture` fact produces `x86_64` on these hosts, while APT needs `amd64`.
+- The Compose module replaces the raw `docker compose up -d` command so Ansible can report whether the deployment changed.
 
-- **Add Docker apt repository** — Ansible's `apt_repository` module manages that file in its own normalized format, which differed slightly from the file created by hand back in [Docker Host Setup](../proxmox/docker-host.md), so it rewrote it. A second run of just this task would show no change.
-- **Deploy the monitoring stack** — this task always reports `changed`, on every run, regardless of whether anything actually changed. It's implemented with the generic `command` module (`docker compose up -d`), which has no way to inspect whether Docker actually created/recreated anything — it only knows whether the command executed. The underlying `docker compose up -d` itself *is* idempotent (it won't recreate already-running containers), but Ansible can't see that through a raw shell-out. Using the `community.docker.docker_compose_v2` module instead would report accurate change status; noted here as a known gap rather than something to quietly ignore.
+The playbook checks that `monitoring/.env` exists; Compose also rejects an empty or missing password. The environment setting initializes a new Grafana admin account. It does not rotate the password in an existing Grafana database; change that through Grafana itself.
 
-## Validation
+## What the screenshots show
 
-I ran both playbooks against the lab, then ran `node_exporter.yml` again to check whether it made any more changes:
+These screenshots are from the original lab runs, before the fixes above. They remain useful records, but they do not validate the revised playbooks on a clean host.
 
-![Ansible node_exporter playbook idempotent re-run](../screenshots/monitoring/ansible-node-exporter-idempotent.png)
+![Original Docker playbook run](../screenshots/monitoring/ansible-docker-host-run.png)
 
-The `PLAY RECAP` shows `changed=0` across all three nodes on the second run, with the download/extract/install tasks all reporting `skipping` since `node_exporter` was already present — showing that this second run did not download or restart anything. This checks the installed state I tested; it does not prove every upgrade or recovery case. Prometheus's **Status → Targets** page continued to show all `proxmox-nodes` targets `UP` throughout.
+The Docker run reported `ok=8, changed=2, failed=0`. Docker was already installed manually, so that result did not catch the repository architecture bug. The old Compose command also reported a change every run.
+
+![Original node_exporter second run](../screenshots/monitoring/ansible-node-exporter-idempotent.png)
+
+The exporter playbook's second run reported `changed=0` on all three nodes. That checked the original installed state, not an upgrade.
+
+## Repository checks
+
+The [Lint workflow](../.github/workflows/lint.yml) runs YAML linting, Ansible linting, and Compose validation. It also checks that Compose fails when the required Grafana password is absent. These checks do not connect to the lab or deploy anything.
+
+A fresh-host deployment, exporter version change, and repeat run against the lab are still needed to validate the revised automation on the actual machines.

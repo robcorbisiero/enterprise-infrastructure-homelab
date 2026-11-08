@@ -1,0 +1,14 @@
+# Local secrets / environment overrides
+.env
+monitoring/.env
+
+# Ansible
+ansible/*.retry
+ansible/collections/
+ansible/inventory/host_vars/
+ansible/inventory/group_vars/
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+*.swp

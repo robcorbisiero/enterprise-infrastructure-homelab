@@ -24,7 +24,7 @@ I checked SSH key login in a second session before disabling password login. On 
 
 ## Do it by hand, then automate it
 
-Installing node_exporter three times made the Ansible use case pretty obvious. The second playbook run reported no changes on all three nodes. The Docker playbook needs more work: its raw Compose command reports a change even when there's nothing to recreate.
+Installing node_exporter three times made the Ansible use case pretty obvious. The second playbook run reported no changes on all three nodes. The original Docker playbook used a raw Compose command that reported a change even when there was nothing to recreate. I replaced it with the Compose module and corrected the APT architecture setting; those changes still need a new run against the lab.
 
 ## Leave notes I can use again
 

@@ -68,7 +68,7 @@ I deployed Prometheus, Grafana, Alertmanager, node-exporter, and cAdvisor on the
 
 ![Prometheus targets during testing](screenshots/monitoring/prometheus-targets-all-up.png)
 
-After installing node_exporter manually on all three nodes, I wrote an Ansible playbook to repeat the setup. Its second run reported `changed=0` on all three. The Docker playbook also ran successfully, though its Compose command still reports a change every time; I've kept that limitation in the notes.
+After installing node_exporter manually on all three nodes, I wrote an Ansible playbook to repeat the setup. Its second run reported `changed=0` on all three. The original Docker playbook ran against an already configured host. I've since corrected its APT architecture setting and replaced the raw Compose command with the Compose module; the notes distinguish those code fixes from the older lab results.
 
 [Monitoring setup and configs](monitoring/monitoring-stack.md) · [Ansible playbooks and run results](ansible/automation.md)
 
@@ -82,6 +82,10 @@ I restored the PBS snapshot into a separate VM (`999`) and confirmed it booted, 
 
 [PBS setup, storage mistake, and restore test](proxmox/backup-and-disaster-recovery.md)
 
+## Remote access
+
+I also kept the [Tailscale access notes](networking/remote-access-tailscale.md): reach the Windows host through the tailnet, then manage the lab from that desktop. The setup still needs its own screenshots and an outside-network test recorded here.
+
 ## Things that went wrong
 
 The useful part of this lab was figuring out why something didn't work: losing switch SSH after changing the uplink, a Docker repository key error, Group Policy reaching the computer but not the user, and a successful backup going to the wrong place.
@@ -93,5 +97,5 @@ I kept those in the [troubleshooting log](troubleshooting-log.md), with the fixe
 - Give PBS separate storage or an offsite copy.
 - Configure an actual Alertmanager notification receiver and test delivery.
 - Add Windows Server metrics and more Grafana dashboards.
-- Replace the Docker playbook's raw Compose command with a task that reports changes accurately.
+- Test the revised playbooks on a fresh host and check an exporter version upgrade.
 - Record the NFS export path and storage pool details.

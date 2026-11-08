@@ -3,11 +3,11 @@
   hosts: docker_hosts
   become: true
   vars:
-    repo_path: "/home/administrator/enterprise-infrastructure-homelab"
+    repo_path: "{{ playbook_dir }}/../.."
 
   tasks:
     - name: Install prerequisite packages
-      apt:
+      ansible.builtin.apt:
         name:
           - ca-certificates
           - curl
@@ -15,25 +15,34 @@
         update_cache: true
 
     - name: Ensure keyrings directory exists
-      file:
+      ansible.builtin.file:
         path: /etc/apt/keyrings
         state: directory
         mode: "0755"
 
     - name: Add Docker's GPG key
-      get_url:
+      ansible.builtin.get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
         dest: /etc/apt/keyrings/docker.asc
         mode: "0644"
 
+    - name: Resolve the dpkg architecture for the apt repository
+      ansible.builtin.command: dpkg --print-architecture
+      register: dpkg_architecture
+      changed_when: false
+
     - name: Add Docker apt repository
-      apt_repository:
-        repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch={{ dpkg_architecture.stdout }}
+          signed-by=/etc/apt/keyrings/docker.asc]
+          https://download.docker.com/linux/ubuntu
+          {{ ansible_distribution_release }} stable
         state: present
         filename: docker
 
     - name: Install Docker packages
-      apt:
+      ansible.builtin.apt:
         name:
           - docker-ce
           - docker-ce-cli
@@ -43,12 +52,22 @@
         update_cache: true
 
     - name: Ensure Docker service is enabled and running
-      systemd:
+      ansible.builtin.systemd:
         name: docker
         enabled: true
         state: started
 
+    - name: Check for the monitoring environment file
+      ansible.builtin.stat:
+        path: "{{ repo_path }}/monitoring/.env"
+      register: monitoring_env
+
+    - name: Require monitoring credentials before deployment
+      ansible.builtin.assert:
+        that: monitoring_env.stat.exists
+        fail_msg: Copy monitoring/.env.example to monitoring/.env and set GRAFANA_ADMIN_PASSWORD first.
+
     - name: Deploy the monitoring stack
-      command: docker compose up -d
-      args:
-        chdir: "{{ repo_path }}/monitoring"
+      community.docker.docker_compose_v2:
+        project_src: "{{ repo_path }}/monitoring"
+        state: present
