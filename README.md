@@ -6,6 +6,21 @@ I built this lab out of refurbished desktops, mini PCs, and a Cisco 3750G. I wan
 
 It started with a switch that wouldn't boot and a homemade console cable. From there I built a three-node Proxmox cluster, set up Windows Server services, imaged a client over the network, and got a Docker host backed up and monitored. These are my notes, commands, photos, and screenshots from that build. They describe what I tested at the time, rather than a live status page.
 
+## At a glance
+
+This repository documents a hands-on infrastructure build, including the problems encountered and the tests used to verify fixes. It is a historical project record, **not** a claim that every service is currently running.
+
+| Area | Hands-on evidence |
+| --- | --- |
+| Windows administration | Active Directory Domain Services, DNS, DHCP, WDS/PXE imaging, organizational units, and Group Policy troubleshooting |
+| Networking | Cisco Catalyst 3750G recovery, console access, VLANs, management connectivity, and network troubleshooting |
+| Virtualization | Three-node Proxmox cluster, Ubuntu virtual machine, and Windows-hosted **NFS shared storage** (not Ceph) |
+| Containers and monitoring | Docker, Portainer, Prometheus, Grafana, Alertmanager, node-exporter, and cAdvisor |
+| Automation | Ansible exporter deployment, repeat-run idempotence check, and documented playbook corrections |
+| Recovery | Proxmox Backup Server backup destination troubleshooting and a boot-tested restore to a separate VM |
+
+**Start here:** [Evidence and skills index](PORTFOLIO.md) · [Topology diagram](diagrams/homelab-topology.svg) · [Troubleshooting log](troubleshooting-log.md) · [Lessons learned](lessons-learned.md)
+
 ## The setup
 
 | Hardware | What I used it for |
